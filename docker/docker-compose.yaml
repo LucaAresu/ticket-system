@@ -4,6 +4,8 @@ networks:
     ticket_network:
       name: ticket_network
       driver: bridge
+volumes:
+  app_database: {}
 
 services:
   php_ticket:
@@ -24,3 +26,14 @@ services:
       - ../:/var/www/html:cached
     networks:
       - ticket_network
+  db:
+    image: mariadb:10.3.22
+    volumes:
+      - app_database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ticket
+    networks:
+      - ticket_network
+    ports:
+      - "53306:3306"

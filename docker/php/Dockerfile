@@ -4,11 +4,20 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     vim \
     git \
+    libicu-dev \
     zsh \
     sudo \
-    wget
+    wget  \
+    && docker-php-ext-install -j5 \
+        bcmath \
+        intl \
+        opcache \
+        pdo \
+        pdo_mysql
 
 ENV TZ=Europe/Rome
+
+RUN
 
 #oh-my-zsh
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.5/zsh-in-docker.sh)" --
