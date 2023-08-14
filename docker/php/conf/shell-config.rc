@@ -6,3 +6,5 @@ alias copydebug="cat /usr/local/bin/xdebug/xdebug.ini > /usr/local/etc/php/conf.
 alias xdb="copydebug && echo 'xdebug.mode=develop,debug' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && kill -USR2 1"
 alias xcoverage="copydebug && echo 'xdebug.mode=develop,debug,coverage' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && kill -USR2 1"
 alias xoff="copydebug && kill -USR2 1"
+
+alias syco="bin/console"
