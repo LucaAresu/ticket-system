@@ -1,5 +1,9 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute
+#create_ticket:
+#  path: /v1/ticket
+#  controller: TicketSystem\Ticket\Infrastructure\Communication\Http\Symfony\Controller\TicketController::create
+#  methods: POST
