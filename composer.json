@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": "8.2",
+        "php": "^8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "symfony/console": "6.3.*",
@@ -26,8 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "TicketSystem\\": "src/TicketSystem",
-            "App\\": "src/App"
+            "App\\": "src/App/",
+            "TicketSystem\\": "src/TicketSystem/"
         }
     },
     "autoload-dev": {
