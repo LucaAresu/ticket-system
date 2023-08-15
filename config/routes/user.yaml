@@ -1,0 +1,4 @@
+create_user:
+  path: /v1/user
+  controller: TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller\UserController::createUser
+  methods: POST

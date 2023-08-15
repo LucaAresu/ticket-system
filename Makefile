@@ -15,16 +15,18 @@ stop:
 enter:
 	 $(EXEC_PHP) /bin/zsh
 
+
+# Use them inside the container
 psalm:
-	$(EXEC_PHP) vendor/bin/psalm -c ./tools/psalm/psalm.xml --show-info=true --no-cache
+	vendor/bin/psalm -c ./tools/psalm/psalm.xml --show-info=true --no-cache
 
 check-cs:
-	$(EXEC_PHP) vendor/bin/php-cs-fixer fix --dry-run --verbose --show-progress=dots --cache-file=tools/php-cs-fixer/.php-cs-fixer.cache --config=tools/php-cs-fixer/config.php
+	vendor/bin/php-cs-fixer fix --dry-run --verbose --show-progress=dots --cache-file=tools/php-cs-fixer/.php-cs-fixer.cache --config=tools/php-cs-fixer/config.php
 fix-cs:
-	$(EXEC_PHP) vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --cache-file=tools/php-cs-fixer/.php-cs-fixer.cache --config=tools/php-cs-fixer/config.php
+	vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --cache-file=tools/php-cs-fixer/.php-cs-fixer.cache --config=tools/php-cs-fixer/config.php
 
 test:
-	$(EXEC_PHP) vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
+	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
 
 infection:
-	$(EXEC_PHP) infection --configuration=tools/infection/infection.json5
+	infection --configuration=tools/infection/infection.json5

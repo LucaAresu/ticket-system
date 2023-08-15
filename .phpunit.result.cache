@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"Tests\\Unit\\TicketSystem\\Shared\\Domain\\EmailTest::it_should_throw_exception":0.002,"Tests\\Unit\\TicketSystem\\Shared\\Domain\\EmailTest::it_should_create_class":0.008}}

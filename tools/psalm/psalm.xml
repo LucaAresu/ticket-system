@@ -11,16 +11,35 @@
 >
     <projectFiles>
         <directory name="../../src" />
-<!--        <directory name="../../tests" />-->
         <ignoreFiles>
             <directory name="../../vendor" />
+            <directory name="../../src/App" />
+            <file name="../../tests/bootstrap.php" />
         </ignoreFiles>
     </projectFiles>
 
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
         <pluginClass class="Psalm\MockeryPlugin\Plugin"/>
-        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin" />
         <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
     </plugins>
+    <issueHandlers>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="../../src/TicketSystem/*/Infrastructure/Domain/Doctrine" />
+                <directory name="../../src/TicketSystem/*/Infrastructure/Communication/Http/Symfony/Controller" />
+            </errorLevel>
+        </UnusedClass>
+        <PossiblyUnusedProperty>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/**/*Response.php" />
+            </errorLevel>
+        </PossiblyUnusedProperty>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="*::__construct" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
 </psalm>

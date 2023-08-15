@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TicketSystem\User\Application\:
+    resource: '%kernel.project_dir%/src/TicketSystem/User/Application/*'
+    exclude: '%kernel.project_dir%/src/TicketSystem/User/Application/**/{*Request,*Response}'
+
+  TicketSystem\User\Domain\UserRepository:
+    class: TicketSystem\User\Infrastructure\Domain\Doctrine\DoctrineUserRepository
+    arguments:
+      $registry: '@doctrine'
+
+when@test:
+  services:
+    TestUserRepository:
+      alias: TicketSystem\User\Domain\UserRepository
+      public: true

@@ -10,11 +10,13 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
+        "ramsey/uuid": "*",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.3.*",
         "symfony/runtime": "6.3.*",
+        "symfony/security-bundle": "6.3.*",
         "symfony/yaml": "6.3.*"
     },
     "config": {
@@ -67,6 +69,7 @@
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^7.2",
         "friendsofphp/php-cs-fixer": "^3.22",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.3",
