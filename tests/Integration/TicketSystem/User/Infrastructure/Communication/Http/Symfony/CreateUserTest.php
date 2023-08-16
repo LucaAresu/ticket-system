@@ -32,4 +32,16 @@ class CreateUserTest extends WebTestCase
 
         self::assertNotNull($user);
     }
+
+    /** @test */
+    public function it_should_error_when_empty_request(): void
+    {
+        $client = self::createClient();
+
+        $client->catchExceptions(false);
+
+        $client->request('POST', '/v1/user');
+
+        self::assertResponseStatusCodeSame(401);
+    }
 }

@@ -27,6 +27,8 @@ fix-cs:
 
 test:
 	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
+coverage:
+	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox --coverage-html tools/phpunit/coverage
 
 infection:
 	infection --configuration=tools/infection/infection.json5

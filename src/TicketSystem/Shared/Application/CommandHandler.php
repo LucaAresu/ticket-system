@@ -34,13 +34,14 @@ readonly class CommandHandler
             return $this->command->execute($request);
         } catch (\InvalidArgumentException $e) {
             return CommandFailedResponse::create(
-                sprintf('A validation error occurred: %s', $e->getMessage())
+                sprintf('A validation error occurred: %s', $e->getMessage()),
+                401
             );
         } catch (DomainException $e) {
-            CommandFailedResponse::create($e->getMessage());
+            CommandFailedResponse::create($e->getMessage(), 500);
         } catch (\Throwable $e) {
             // todo notify
-            return CommandFailedResponse::create('Internal Error');
+            return CommandFailedResponse::create('Internal Error', 500);
         }
     }
 }

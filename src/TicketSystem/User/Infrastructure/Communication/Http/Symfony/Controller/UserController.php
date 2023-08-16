@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TicketSystem\Shared\Application\CommandHandler;
+use TicketSystem\Shared\Application\FailureResponse;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandResponse;
 
@@ -25,6 +26,9 @@ class UserController
             )
         );
 
-        return new JsonResponse($response);
+        return new JsonResponse(
+            $response,
+            $response instanceof FailureResponse ? $response->status : 200
+        );
     }
 }

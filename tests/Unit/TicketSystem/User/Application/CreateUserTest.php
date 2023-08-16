@@ -42,10 +42,11 @@ class CreateUserTest extends KernelTestCase
     public function it_should_create_an_user(): void
     {
         $this->repository->shouldReceive('save')->once();
+        $this->repository->byDefault()->shouldReceive('nextId')->never();
 
         $response = $this->command->execute(
             CreateUserCommandRequest::create(
-                null,
+                '2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58',
                 'prova@example.net'
             )
         );
