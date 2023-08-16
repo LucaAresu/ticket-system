@@ -7,6 +7,7 @@ namespace Tests\Unit\TicketSystem\User\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TicketSystem\User\Application\CreateUser\CreateUserCommand;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
+use TicketSystem\User\Application\CreateUser\UserAlreadyExistException;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRepository;
@@ -55,14 +56,14 @@ class CreateUserTest extends KernelTestCase
     /** @test */
     public function it_should_give_response_fail(): void
     {
-        $response = $this->command->execute(
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
                 'wrong-email'
             )
         );
-
-        self::assertFalse($response->success);
     }
 
     /** @test */
@@ -70,14 +71,14 @@ class CreateUserTest extends KernelTestCase
     {
         $this->repository->byDefault()->shouldReceive('ofId')->once()->andReturn(\Mockery::mock(User::class));
 
-        $response = $this->command->execute(
+        $this->expectException(UserAlreadyExistException::class);
+
+        $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
                 'prova@example.net'
             )
         );
-
-        self::assertFalse($response->success);
     }
 
     /** @test */
@@ -85,13 +86,13 @@ class CreateUserTest extends KernelTestCase
     {
         $this->repository->byDefault()->shouldReceive('ofEmail')->once()->andReturn(\Mockery::mock(User::class));
 
-        $response = $this->command->execute(
+        $this->expectException(UserAlreadyExistException::class);
+
+        $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
                 'prova@example.net'
             )
         );
-
-        self::assertFalse($response->success);
     }
 }

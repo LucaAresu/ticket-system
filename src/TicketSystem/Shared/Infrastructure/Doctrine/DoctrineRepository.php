@@ -7,7 +7,6 @@ namespace TicketSystem\Shared\Infrastructure\Doctrine;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ObjectManager;
 
 abstract class DoctrineRepository
 {

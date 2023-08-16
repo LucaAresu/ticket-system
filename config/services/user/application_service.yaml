@@ -13,6 +13,11 @@ services:
     arguments:
       $registry: '@doctrine'
 
+  TicketSystem\Shared\Application\CommandHandler $createUserCommand:
+    class: TicketSystem\Shared\Application\CommandHandler
+    arguments:
+      $command: '@TicketSystem\User\Application\CreateUser\CreateUserCommand'
+
 when@test:
   services:
     TestUserRepository:

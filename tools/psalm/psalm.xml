@@ -29,6 +29,7 @@
             <errorLevel type="suppress">
                 <directory name="../../src/TicketSystem/*/Infrastructure/Domain/Doctrine" />
                 <directory name="../../src/TicketSystem/*/Infrastructure/Communication/Http/Symfony/Controller" />
+                <file name="../../src/TicketSystem/*/Application/**/*Command.php" />
             </errorLevel>
         </UnusedClass>
         <PossiblyUnusedProperty>

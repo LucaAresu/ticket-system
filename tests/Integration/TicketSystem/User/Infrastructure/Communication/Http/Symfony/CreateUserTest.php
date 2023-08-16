@@ -15,6 +15,8 @@ class CreateUserTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->catchExceptions(false);
+
         $client->request('POST', '/v1/user', [
             'id' => '',
             'email' => 'prova2@example.net',
