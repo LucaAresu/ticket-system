@@ -12,10 +12,6 @@ abstract class DoctrineEntityId extends GuidType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        if (!$value) {
-            return null;
-        }
-
         return $value instanceof EntityId ? $value->id : (string) $value;
     }
 

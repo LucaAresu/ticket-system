@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TicketSystem\Shared\Application;
+namespace TicketSystem\Shared\Application\Command;
 
 final readonly class CommandFailedResponse extends FailureResponse
 {

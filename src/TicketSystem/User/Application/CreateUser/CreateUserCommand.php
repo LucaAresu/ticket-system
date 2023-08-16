@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Application\CreateUser;
 
-use TicketSystem\Shared\Application\Command;
+use TicketSystem\Shared\Application\Command\Command;
 use TicketSystem\Shared\Domain\Email;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;

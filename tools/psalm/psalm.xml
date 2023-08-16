@@ -25,13 +25,7 @@
         <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
     </plugins>
     <issueHandlers>
-        <UnusedClass>
-            <errorLevel type="suppress">
-                <directory name="../../src/TicketSystem/*/Infrastructure/Domain/Doctrine" />
-                <directory name="../../src/TicketSystem/*/Infrastructure/Communication/Http/Symfony/Controller" />
-                <file name="../../src/TicketSystem/*/Application/**/*Command.php" />
-            </errorLevel>
-        </UnusedClass>
+        <UnusedClass errorLevel="suppress" />
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <file name="../../src/TicketSystem/**/*Response.php" />

@@ -8,7 +8,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 use TicketSystem\Shared\Domain\Email;
 
-/** @psalm-suppress UnusedClass */
 class DoctrineEmail extends StringType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
@@ -17,7 +16,8 @@ class DoctrineEmail extends StringType
             return $value->value;
         }
 
-        return (string) $value;
+        /** @var string $value */
+        return $value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): Email

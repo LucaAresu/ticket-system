@@ -13,8 +13,8 @@ services:
     arguments:
       $registry: '@doctrine'
 
-  TicketSystem\Shared\Application\CommandHandler $createUserCommand:
-    class: TicketSystem\Shared\Application\CommandHandler
+  TicketSystem\Shared\Application\Command\CommandHandler $createUserCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
     arguments:
       $command: '@TicketSystem\User\Application\CreateUser\CreateUserCommand'
 

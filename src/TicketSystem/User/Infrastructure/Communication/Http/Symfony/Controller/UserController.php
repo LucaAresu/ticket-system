@@ -7,8 +7,8 @@ namespace TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use TicketSystem\Shared\Application\CommandHandler;
-use TicketSystem\Shared\Application\FailureResponse;
+use TicketSystem\Shared\Application\Command\CommandHandler;
+use TicketSystem\Shared\Application\Command\FailureResponse;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandResponse;
 
