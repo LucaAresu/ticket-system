@@ -23,7 +23,7 @@
         <server name="APP_ENV" value="test" force="true"/>
         <server name="DATABASE_URL" value="mysql://root:root@db/ticket?serverVersion=10.2.15-MariaDB&amp;charset=utf8" />
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-        <server name="APP_DEBUG" value="false" />
+        <server name="APP_DEBUG" value="true" />
     </php>
     <extensions>
         <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"></bootstrap>
