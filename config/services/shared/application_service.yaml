@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+
+  TicketSystem\Shared\Application\Logger:
+    class: TicketSystem\Shared\Infrastructure\Application\Symfony\Monolog\MonologLogger
+
+  TicketSystem\Shared\Infrastructure\Redis\Predis\Client:
+    public: true
+    class: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
+    arguments:
+      $host: '%env(resolve:REDIS_HOST)%'
+      $port: '%env(resolve:REDIS_PORT)%'
