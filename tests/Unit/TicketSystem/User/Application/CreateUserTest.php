@@ -7,9 +7,10 @@ namespace Tests\Unit\TicketSystem\User\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TicketSystem\User\Application\CreateUser\CreateUserCommand;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
-use TicketSystem\User\Application\CreateUser\UserAlreadyExistException;
 use TicketSystem\User\Domain\User;
+use TicketSystem\User\Domain\UserAlreadyExistException;
 use TicketSystem\User\Domain\UserId;
+use TicketSystem\User\Domain\UserPasswordHasher;
 use TicketSystem\User\Domain\UserRepository;
 
 class CreateUserTest extends KernelTestCase
@@ -20,8 +21,10 @@ class CreateUserTest extends KernelTestCase
     public function setUp(): void
     {
         $this->repository = \Mockery::mock(UserRepository::class);
+        $userPasswordHasher = \Mockery::mock(UserPasswordHasher::class);
+        $userPasswordHasher->shouldReceive('execute')->zeroOrMoreTimes()->andReturn('fasf');
 
-        $this->repository->shouldReceive('nextId')->once()->andReturn(
+        $this->repository->shouldReceive('nextId')->zeroOrMoreTimes()->andReturn(
             UserId::create('2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58')
         );
 
@@ -29,7 +32,8 @@ class CreateUserTest extends KernelTestCase
         $this->repository->shouldReceive('ofEmail')->zeroOrMoreTimes()->andReturn(null);
 
         $this->command = new CreateUserCommand(
-            $this->repository
+            $this->repository,
+            $userPasswordHasher
         );
     }
 
@@ -47,7 +51,8 @@ class CreateUserTest extends KernelTestCase
         $response = $this->command->execute(
             CreateUserCommandRequest::create(
                 '2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58',
-                'prova@example.net'
+                'prova@example.net',
+                'asfasf'
             )
         );
 
@@ -55,14 +60,15 @@ class CreateUserTest extends KernelTestCase
     }
 
     /** @test */
-    public function it_should_give_response_fail(): void
+    public function it_should_give_response_fail_on_wrong_email(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
-                'wrong-email'
+                'wrong-email',
+                'safas'
             )
         );
     }
@@ -77,7 +83,8 @@ class CreateUserTest extends KernelTestCase
         $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
-                'prova@example.net'
+                'prova@example.net',
+                'safas'
             )
         );
     }
@@ -92,7 +99,22 @@ class CreateUserTest extends KernelTestCase
         $this->command->execute(
             CreateUserCommandRequest::create(
                 null,
-                'prova@example.net'
+                'prova@example.net',
+                'sfafas'
+            )
+        );
+    }
+
+    /** @test */
+    public function it_should_error_when_the_password_is_empty(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->command->execute(
+            CreateUserCommandRequest::create(
+                null,
+                'prova@example.net',
+                ''
             )
         );
     }

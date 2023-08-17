@@ -12,12 +12,7 @@ class DoctrineEmail extends StringType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-        if ($value instanceof Email) {
-            return $value->value;
-        }
-
-        /** @var string $value */
-        return $value;
+        return $value instanceof Email ? $value->value : (string) $value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): Email

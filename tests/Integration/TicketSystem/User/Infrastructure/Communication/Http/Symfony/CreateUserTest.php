@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\TicketSystem\User\Infrastructure\Communication\Http\Symfony;
+namespace Tests\Integration\TicketSystem\User\Infrastructure\Communication\Http\Symfony;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use TicketSystem\Shared\Domain\Email;
@@ -20,6 +20,7 @@ class CreateUserTest extends WebTestCase
         $client->request('POST', '/v1/user', [
             'id' => '',
             'email' => 'prova2@example.net',
+            'password' => 'fsafas',
         ]);
 
         self::assertResponseIsSuccessful();

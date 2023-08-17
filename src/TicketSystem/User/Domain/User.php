@@ -11,12 +11,13 @@ class User
     private function __construct(
         public UserId $id,
         public Email $email,
+        #[\SensitiveParameter] public string $password
     ) {
     }
 
-    public static function create(UserId $id, Email $email): self
+    public static function create(UserId $id, Email $email, #[\SensitiveParameter] string $password): self
     {
-        return new self($id, $email);
+        return new self($id, $email, $password);
     }
 
     public function isEqual(User $user): bool

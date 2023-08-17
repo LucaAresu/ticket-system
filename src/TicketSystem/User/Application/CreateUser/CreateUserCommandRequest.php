@@ -8,14 +8,16 @@ final readonly class CreateUserCommandRequest
 {
     private function __construct(
         public null|string $id,
-        public string $email
+        public string $email,
+        #[\SensitiveParameter] public string $password
     ) {
     }
 
     public static function create(
         null|string $id,
-        string $email
+        string $email,
+        #[\SensitiveParameter] string $password
     ): self {
-        return new self($id, $email);
+        return new self($id, $email, $password);
     }
 }

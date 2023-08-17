@@ -13,13 +13,44 @@ services:
     arguments:
       $registry: '@doctrine'
 
-  TicketSystem\Shared\Application\Command\CommandHandler $createUserCommand:
-    class: TicketSystem\Shared\Application\Command\CommandHandler
+  TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler:
+    class: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler
+
+  TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository:
+    public: true
+    class: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository
     arguments:
-      $command: '@TicketSystem\User\Application\CreateUser\CreateUserCommand'
+      $accessTokenExpirationInSeconds: '%env(resolve:ACCESS_TOKEN_LIFETIME)%'
+      $client: '@accessTokenClient'
+
+  TicketSystem\User\Domain\UserPasswordHasher:
+    class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\SymfonyUserPasswordHasher
+
+  TicketSystem\User\Domain\UserPasswordVerifier:
+    class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\SymfonyUserPasswordVerifier
+
+  TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider:
+    class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider
+
+  TicketSystem\User\Domain\Login\GenerateAccessToken:
+    class: TicketSystem\User\Domain\Login\GenerateAccessToken
+
+  TicketSystem\User\Domain\Login\StoreAccessToken:
+    class: TicketSystem\User\Infrastructure\Domain\Login\Redis\Predis\PredisStoreAccessToken
+
+  accessTokenClient:
+    parent: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
+    arguments:
+      $database: '%env(resolve:ACCESS_TOKEN_DATABASE)%'
 
 when@test:
   services:
     TestUserRepository:
       alias: TicketSystem\User\Domain\UserRepository
+      public: true
+    TestUserPasswordHasher:
+      alias: TicketSystem\User\Domain\UserPasswordHasher
+      public: true
+    TestUserPasswordVerifier:
+      alias: TicketSystem\User\Domain\UserPasswordVerifier
       public: true

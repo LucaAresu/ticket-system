@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\TicketSystem\User\Domain;
+namespace Tests\Integration\TicketSystem\User\Domain;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TicketSystem\Shared\Domain\Email;
@@ -24,7 +24,8 @@ class UserRepositoryTest extends KernelTestCase
         $id = UserId::create('2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58');
         $user = User::create(
             $id,
-            Email::create('prova@example.net')
+            Email::create('prova@example.net'),
+            'fsafs'
         );
 
         $repository->save($user);

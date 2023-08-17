@@ -2,3 +2,13 @@ create_user:
   path: /v1/user
   controller: TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller\UserController::createUser
   methods: POST
+
+retrieve_access_token:
+  path: /v1/user/token
+  controller: TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller\UserController::retrieveAccessToken
+  methods: POST
+
+me:
+  path: /me
+  controller: TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller\UserController::me
+  methods: GET

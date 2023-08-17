@@ -27,6 +27,9 @@ fix-cs:
 
 test:
 	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
+testarg:
+	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox $$arg
+
 coverage:
 	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox --coverage-html tools/phpunit/coverage
 

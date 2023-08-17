@@ -7,3 +7,19 @@ services:
   TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller\:
     resource: '%kernel.project_dir%/src/TicketSystem/User/Infrastructure/Communication/Http/Symfony/Controller'
     tags: ['controller.service_arguments']
+
+
+  TicketSystem\Shared\Application\Command\CommandHandler $createUserCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\User\Application\CreateUser\CreateUserCommand'
+
+  TicketSystem\Shared\Application\Command\CommandHandler $retrieveAccessTokenCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessToken'
+
+  TicketSystem\Shared\Application\Command\CommandHandler $getOwnInfoCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\User\Application\GetOwnInfo\GetOwnInfo'

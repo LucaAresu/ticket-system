@@ -9,8 +9,16 @@ services:
     class: TicketSystem\Shared\Infrastructure\Application\Symfony\Monolog\MonologLogger
 
   TicketSystem\Shared\Infrastructure\Redis\Predis\Client:
-    public: true
+    abstract: true
     class: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
     arguments:
       $host: '%env(resolve:REDIS_HOST)%'
       $port: '%env(resolve:REDIS_PORT)%'
+
+when@test:
+  services:
+    TestRedisClient:
+      public: true
+      parent: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
+      arguments:
+        $database: '%env(resolve:TEST_REDIS_DATABASE)%'

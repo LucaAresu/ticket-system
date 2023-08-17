@@ -34,6 +34,7 @@
         <PossiblyUnusedMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="*::__construct" />
+                <referencedMethod name="TicketSystem\Shared\Infrastructure\Redis\Predis\Client::delete" />
             </errorLevel>
         </PossiblyUnusedMethod>
     </issueHandlers>

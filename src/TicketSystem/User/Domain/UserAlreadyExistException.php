@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TicketSystem\User\Application\CreateUser;
+namespace TicketSystem\User\Domain;
 
 use TicketSystem\Shared\Domain\DomainException;
 

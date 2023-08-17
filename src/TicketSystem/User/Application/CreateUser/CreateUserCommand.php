@@ -7,7 +7,9 @@ namespace TicketSystem\User\Application\CreateUser;
 use TicketSystem\Shared\Application\Command\Command;
 use TicketSystem\Shared\Domain\Email;
 use TicketSystem\User\Domain\User;
+use TicketSystem\User\Domain\UserAlreadyExistException;
 use TicketSystem\User\Domain\UserId;
+use TicketSystem\User\Domain\UserPasswordHasher;
 use TicketSystem\User\Domain\UserRepository;
 
 /**
@@ -16,7 +18,8 @@ use TicketSystem\User\Domain\UserRepository;
 readonly class CreateUserCommand implements Command
 {
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private UserPasswordHasher $passwordHasher
     ) {
     }
 
@@ -33,14 +36,24 @@ readonly class CreateUserCommand implements Command
 
     private function createUser(CreateUserCommandRequest $request): void
     {
+        $this->validateRequest($request);
+
         $user = User::create(
             $this->getUserId($request),
-            Email::create($request->email)
+            Email::create($request->email),
+            $this->passwordHasher->execute($request->password)
         );
 
         $this->checkIfUserExist($user);
 
         $this->userRepository->save($user);
+    }
+
+    private function validateRequest(CreateUserCommandRequest $request): void
+    {
+        if (!$request->password) {
+            throw new \InvalidArgumentException('The password must not be empty');
+        }
     }
 
     private function getUserId(CreateUserCommandRequest $request): UserId

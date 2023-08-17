@@ -2,16 +2,19 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUser: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        doctrine_security_user_provider:
+            id: TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: users_in_memory
+            access_token:
+                token_handler: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler
+                provider: doctrine_security_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -23,7 +26,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/v1/user, roles: PUBLIC_ACCESS }
+        - { path: ^/v1, roles: ROLE_USER }
+        - { path: ^/me, roles: ROLE_USER }
 
 when@test:
     security:

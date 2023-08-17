@@ -14,7 +14,7 @@ use TicketSystem\Shared\Domain\DomainException;
 readonly class CommandHandler
 {
     /**
-     * @param Command<I, O> $command
+     * @param Command $command
      */
     public function __construct(private Command $command, private Logger $logger)
     {
@@ -24,13 +24,14 @@ readonly class CommandHandler
      * @param I $request
      *
      * @return CommandFailureResponse|O
-     *
-     * @psalm-suppress PossiblyUnusedMethod
      */
     public function execute($request)
     {
         try {
-            return $this->command->execute($request);
+            /** @var O $response */
+            $response = $this->command->execute($request);
+
+            return $response;
         } catch (\InvalidArgumentException $e) {
             return CommandFailureResponse::create(
                 sprintf('A validation error occurred: %s', $e->getMessage()),
@@ -38,7 +39,8 @@ readonly class CommandHandler
             );
         } catch (DomainException $e) {
             $this->logger->error($e->getMessage(), [$e]);
-            CommandFailureResponse::create($e->getMessage(), 500);
+
+            return CommandFailureResponse::create($e->getMessage(), 500);
         } catch (\Throwable $e) {
             $this->logger->critical($e->getMessage(), [$e]);
 

@@ -12,11 +12,13 @@ class Client
 
     public function __construct(
         string $host,
-        int $port
+        int $port,
+        int $database,
     ) {
         $this->client = new PredisClient([
             'host' => $host,
             'port' => $port,
+            'database' => $database,
         ]);
     }
 
@@ -27,7 +29,10 @@ class Client
 
     public function get(string $key): null|string
     {
-        return $this->client->get($key);
+        /** @var string|null $value */
+        $value =  $this->client->get($key);
+
+        return $value ?: null;
     }
 
     public function delete(string $key): void

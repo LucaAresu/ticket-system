@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace TicketSystem\Shared\Infrastructure\Application\Symfony\Monolog;
 
 use Psr\Log\LoggerInterface;
+use TicketSystem\Shared\Application\Logger;
 
-readonly class MonologLogger implements \TicketSystem\Shared\Application\Logger
+readonly class MonologLogger implements Logger
 {
     public function __construct(private LoggerInterface $logger)
     {

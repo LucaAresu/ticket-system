@@ -22,7 +22,8 @@ final class Version20230815104719 extends AbstractMigration
         $this->addSql(
             'CREATE TABLE `users` (
             id VARCHAR(36) NOT NULL COMMENT \'(DC2Type:guid )\',
-            email VARCHAR(100) NOT NULL
+            email VARCHAR(100) NOT NULL,
+            password VARCHAR(100) NOT NULL
         )'
         );
     }

@@ -6,11 +6,8 @@ namespace TicketSystem\Shared\Application\Command;
 
 final readonly class CommandFailureResponse extends FailureResponse
 {
-    public false $success;
-
     private function __construct(public string $message, public int $status)
     {
-        $this->success = false;
     }
 
     public static function create(string $message, int $status): self
