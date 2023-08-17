@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketSystem\Shared\Application\Command;
 
-final readonly class CommandFailedResponse extends FailureResponse
+final readonly class CommandFailureResponse extends FailureResponse
 {
     public false $success;
 

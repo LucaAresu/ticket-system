@@ -23,7 +23,7 @@ readonly class CommandHandler
     /**
      * @param I $request
      *
-     * @return CommandFailedResponse|O
+     * @return CommandFailureResponse|O
      *
      * @psalm-suppress PossiblyUnusedMethod
      */
@@ -32,17 +32,17 @@ readonly class CommandHandler
         try {
             return $this->command->execute($request);
         } catch (\InvalidArgumentException $e) {
-            return CommandFailedResponse::create(
+            return CommandFailureResponse::create(
                 sprintf('A validation error occurred: %s', $e->getMessage()),
                 401
             );
         } catch (DomainException $e) {
             $this->logger->error($e->getMessage(), [$e]);
-            CommandFailedResponse::create($e->getMessage(), 500);
+            CommandFailureResponse::create($e->getMessage(), 500);
         } catch (\Throwable $e) {
             $this->logger->critical($e->getMessage(), [$e]);
 
-            return CommandFailedResponse::create('Internal Error', 500);
+            return CommandFailureResponse::create('Internal Error', 500);
         }
     }
 }
