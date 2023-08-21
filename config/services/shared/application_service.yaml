@@ -8,7 +8,7 @@ services:
   TicketSystem\Shared\Application\Logger:
     class: TicketSystem\Shared\Infrastructure\Application\Symfony\Monolog\MonologLogger
 
-  TicketSystem\Shared\Infrastructure\Redis\Predis\Client:
+  app.redis.client:
     abstract: true
     class: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
     arguments:
@@ -19,6 +19,6 @@ when@test:
   services:
     TestRedisClient:
       public: true
-      parent: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
+      parent: app.redis.client
       arguments:
         $database: '%env(resolve:TEST_REDIS_DATABASE)%'

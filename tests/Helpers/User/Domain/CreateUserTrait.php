@@ -30,7 +30,7 @@ trait CreateUserTrait
         $this->createUser();
 
         /** @var AccessTokenRepository $accessTokenRepository */
-        $accessTokenRepository = self::getContainer()->get(AccessTokenRepository::class);
+        $accessTokenRepository = self::getContainer()->get('TestAccessTokenRepository');
         $accessTokenRepository->save('access-token', UserHelper::userId());
 
         $client->loginUser(new DoctrineSecurityUser(UserHelper::userId()));

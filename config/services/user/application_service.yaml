@@ -4,44 +4,64 @@ services:
     autoconfigure: true
     public: false
 
+    # Application
+
   TicketSystem\User\Application\:
     resource: '%kernel.project_dir%/src/TicketSystem/User/Application/*'
     exclude: '%kernel.project_dir%/src/TicketSystem/User/Application/**/{*Request,*Response}'
+
+
+  TicketSystem\User\Application\CreateUser\CreateUserCommand:
+    arguments:
+      $passwordHasher: '@app.user.password.hasher'
+
+  TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessToken:
+    arguments:
+      $passwordVerifier: '@app.user.password.verifier'
+
+    # Domain
 
   TicketSystem\User\Domain\UserRepository:
     class: TicketSystem\User\Infrastructure\Domain\Doctrine\DoctrineUserRepository
     arguments:
       $registry: '@doctrine'
 
-  TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler:
+  app.access-token.handler:
     class: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler
+    arguments:
+      $accessTokenRepository: '@app.access-token.repository'
 
-  TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository:
-    public: true
+  app.access-token.repository:
     class: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository
     arguments:
       $accessTokenExpirationInSeconds: '%env(resolve:ACCESS_TOKEN_LIFETIME)%'
       $client: '@accessTokenClient'
 
-  TicketSystem\User\Domain\UserPasswordHasher:
+  app.user.password.hasher:
     class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\SymfonyUserPasswordHasher
 
-  TicketSystem\User\Domain\UserPasswordVerifier:
+  app.user.password.verifier:
     class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\SymfonyUserPasswordVerifier
-
-  TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider:
-    class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider
 
   TicketSystem\User\Domain\Login\GenerateAccessToken:
     class: TicketSystem\User\Domain\Login\GenerateAccessToken
+    arguments:
+      $storeAccessToken: '@app.access-token.store'
 
-  TicketSystem\User\Domain\Login\StoreAccessToken:
+  # Infrastructure
+
+  app.access-token.store:
     class: TicketSystem\User\Infrastructure\Domain\Login\Redis\Predis\PredisStoreAccessToken
+    arguments:
+      $accessTokenRepository: '@app.access-token.repository'
 
   accessTokenClient:
-    parent: TicketSystem\Shared\Infrastructure\Redis\Predis\Client
+    parent: 'app.redis.client'
     arguments:
       $database: '%env(resolve:ACCESS_TOKEN_DATABASE)%'
+
+  app.user.provider:
+    class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider
 
 when@test:
   services:
@@ -49,8 +69,11 @@ when@test:
       alias: TicketSystem\User\Domain\UserRepository
       public: true
     TestUserPasswordHasher:
-      alias: TicketSystem\User\Domain\UserPasswordHasher
+      alias: app.user.password.hasher
       public: true
     TestUserPasswordVerifier:
-      alias: TicketSystem\User\Domain\UserPasswordVerifier
+      alias: app.user.password.verifier
+      public: true
+    TestAccessTokenRepository:
+      alias: app.access-token.repository
       public: true
