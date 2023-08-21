@@ -16,4 +16,12 @@ abstract class Controller
             $response instanceof FailureResponse ? $response->status : 200
         );
     }
+
+    public function forbiddenResponse(string $message): JsonResponse
+    {
+        return new JsonResponse([
+            'success' => false,
+            'message' => $message
+        ], 401);
+    }
 }

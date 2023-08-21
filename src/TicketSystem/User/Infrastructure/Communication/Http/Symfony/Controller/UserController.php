@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use TicketSystem\Shared\Application\Command\CommandHandler;
+use TicketSystem\Shared\Application\Command\FailureResponse;
 use TicketSystem\Shared\Infrastructure\Symfony\Communication\Http\Controller\Controller;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandResponse;
@@ -20,8 +22,12 @@ class UserController extends Controller
     /**
      * @param CommandHandler<CreateUserCommandRequest, CreateUserCommandResponse> $createUserCommand
      */
-    public function createUser(Request $request, CommandHandler $createUserCommand): Response
+    public function createUser(#[CurrentUser] null|DoctrineSecurityUser $user, Request $request, CommandHandler $createUserCommand): Response
     {
+        if ($user) {
+            return $this->forbiddenResponse('Logged users could not access this resource');
+        }
+
         $response = $createUserCommand->execute(
             CreateUserCommandRequest::create(
                 ((string) $request->request->get('id')) ?: null,
