@@ -6,6 +6,9 @@ DOCKER_COMPOSE=docker-compose --file docker/docker-compose.yaml
 PHP_CONTAINER=php_ticket
 EXEC_PHP=$(DOCKER_COMPOSE) exec -it $(PHP_CONTAINER)
 
+
+PHPUNIT_COMMAND=vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
+
 build:
 	$(DOCKER_COMPOSE) build --no-cache
 start:
@@ -26,12 +29,12 @@ fix-cs:
 	vendor/bin/php-cs-fixer fix --verbose --show-progress=dots --cache-file=tools/php-cs-fixer/.php-cs-fixer.cache --config=tools/php-cs-fixer/config.php
 
 test:
-	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox
-testarg:
-	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox $$arg
+	$(PHPUNIT_COMMAND)
+testfilter:
+	$(PHPUNIT_COMMAND) --filter $$arg
 
 coverage:
-	vendor/bin/phpunit --configuration tools/phpunit/phpunit.xml.dist --colors=always --testdox --coverage-html tools/phpunit/coverage
+	$(PHPUNIT_COMMAND) --coverage-html tools/phpunit/coverage
 
 infection:
 	infection --configuration=tools/infection/infection.json5 --threads=8
