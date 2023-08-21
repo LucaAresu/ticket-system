@@ -37,3 +37,11 @@ services:
       - ticket_network
     ports:
       - "53306:3306"
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - ticket_network
+    ports:
+      - "56379:6379"

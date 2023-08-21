@@ -11,16 +11,31 @@
 >
     <projectFiles>
         <directory name="../../src" />
-<!--        <directory name="../../tests" />-->
         <ignoreFiles>
             <directory name="../../vendor" />
+            <directory name="../../src/App" />
+            <file name="../../tests/bootstrap.php" />
         </ignoreFiles>
     </projectFiles>
 
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
         <pluginClass class="Psalm\MockeryPlugin\Plugin"/>
-        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin" />
         <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
     </plugins>
+    <issueHandlers>
+        <UnusedClass errorLevel="suppress" />
+        <PossiblyUnusedProperty>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/**/*Response.php" />
+            </errorLevel>
+        </PossiblyUnusedProperty>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="*::__construct" />
+                <referencedMethod name="TicketSystem\Shared\Infrastructure\Redis\Predis\Client::delete" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
 </psalm>
