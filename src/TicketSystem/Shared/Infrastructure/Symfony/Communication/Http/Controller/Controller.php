@@ -21,7 +21,7 @@ abstract class Controller
     {
         return new JsonResponse([
             'success' => false,
-            'message' => $message
+            'message' => $message,
         ], 401);
     }
 }

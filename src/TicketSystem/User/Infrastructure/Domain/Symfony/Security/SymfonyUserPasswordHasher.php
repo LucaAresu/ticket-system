@@ -8,7 +8,7 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use TicketSystem\User\Domain\UserPasswordHasher;
 
-class SymfonyUserPasswordHasher implements UserPasswordHasher
+class SymfonyUserPasswordHasher extends UserPasswordHasher
 {
     private PasswordHasherInterface $passwordHasher;
 
@@ -17,7 +17,7 @@ class SymfonyUserPasswordHasher implements UserPasswordHasher
         $this->passwordHasher = $passwordHasherFactory->getPasswordHasher(DoctrineSecurityUser::class);
     }
 
-    public function execute(string $password): string
+    protected function hash(string $password): string
     {
         return $this->passwordHasher->hash($password);
     }

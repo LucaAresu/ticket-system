@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Infrastructure\Communication\Http\Symfony\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use TicketSystem\Shared\Application\Command\CommandHandler;
-use TicketSystem\Shared\Application\Command\FailureResponse;
 use TicketSystem\Shared\Infrastructure\Symfony\Communication\Http\Controller\Controller;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
 use TicketSystem\User\Application\CreateUser\CreateUserCommandResponse;

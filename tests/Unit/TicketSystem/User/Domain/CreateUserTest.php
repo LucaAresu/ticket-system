@@ -2,27 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\TicketSystem\User\Application;
+namespace Tests\Unit\TicketSystem\User\Domain;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use TicketSystem\User\Application\CreateUser\CreateUserCommand;
-use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
+use TicketSystem\User\Domain\CreateUser\CreateUser;
+use TicketSystem\User\Domain\CreateUser\CreateUserRequest;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserAlreadyExistException;
+use TicketSystem\User\Domain\UserDto;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserPasswordHasher;
 use TicketSystem\User\Domain\UserRepository;
 
 class CreateUserTest extends KernelTestCase
 {
-    private CreateUserCommand $command;
+    private CreateUser $command;
     private UserRepository $repository;
+    private UserPasswordHasher $userPasswordHasher;
 
     public function setUp(): void
     {
         $this->repository = \Mockery::mock(UserRepository::class);
-        $userPasswordHasher = \Mockery::mock(UserPasswordHasher::class);
-        $userPasswordHasher->shouldReceive('execute')->zeroOrMoreTimes()->andReturn('fasf');
+        $this->userPasswordHasher = \Mockery::mock(UserPasswordHasher::class);
+        $this->userPasswordHasher->shouldReceive('execute')->zeroOrMoreTimes()->andReturn('fasf');
 
         $this->repository->shouldReceive('nextId')->zeroOrMoreTimes()->andReturn(
             UserId::create('2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58')
@@ -31,9 +33,9 @@ class CreateUserTest extends KernelTestCase
         $this->repository->shouldReceive('ofId')->zeroOrMoreTimes()->andReturn(null);
         $this->repository->shouldReceive('ofEmail')->zeroOrMoreTimes()->andReturn(null);
 
-        $this->command = new CreateUserCommand(
+        $this->command = new CreateUser(
             $this->repository,
-            $userPasswordHasher
+            $this->userPasswordHasher
         );
     }
 
@@ -49,14 +51,14 @@ class CreateUserTest extends KernelTestCase
         $this->repository->byDefault()->shouldReceive('nextId')->never();
 
         $response = $this->command->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 '2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58',
                 'prova@example.net',
                 'asfasf'
             )
         );
 
-        self::assertTrue($response->success);
+        self::assertInstanceOf(UserDto::class, $response);
     }
 
     /** @test */
@@ -65,7 +67,7 @@ class CreateUserTest extends KernelTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $this->command->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 null,
                 'wrong-email',
                 'safas'
@@ -81,7 +83,7 @@ class CreateUserTest extends KernelTestCase
         $this->expectException(UserAlreadyExistException::class);
 
         $this->command->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 null,
                 'prova@example.net',
                 'safas'
@@ -97,7 +99,7 @@ class CreateUserTest extends KernelTestCase
         $this->expectException(UserAlreadyExistException::class);
 
         $this->command->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 null,
                 'prova@example.net',
                 'sfafas'
@@ -108,10 +110,11 @@ class CreateUserTest extends KernelTestCase
     /** @test */
     public function it_should_error_when_the_password_is_empty(): void
     {
+        $this->userPasswordHasher->byDefault()->shouldReceive('execute')->andReturn('');
         $this->expectException(\InvalidArgumentException::class);
 
         $this->command->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 null,
                 'prova@example.net',
                 ''

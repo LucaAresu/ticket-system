@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Helpers\User\Domain;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use TicketSystem\User\Application\CreateUser\CreateUserCommand;
-use TicketSystem\User\Application\CreateUser\CreateUserCommandRequest;
+use TicketSystem\User\Domain\CreateUser\CreateUser;
+use TicketSystem\User\Domain\CreateUser\CreateUserRequest;
 use TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUser;
 use TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository;
 
@@ -14,10 +14,10 @@ trait CreateUserTrait
 {
     protected function createUser(): void
     {
-        /** @var CreateUserCommand $createUserCommand */
-        $createUserCommand = self::getContainer()->get(CreateUserCommand::class);
+        /** @var CreateUser $createUserCommand */
+        $createUserCommand = self::getContainer()->get(CreateUser::class);
         $createUserCommand->execute(
-            CreateUserCommandRequest::create(
+            CreateUserRequest::create(
                 UserHelper::userId(),
                 UserHelper::email(),
                 UserHelper::password()

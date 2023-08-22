@@ -10,11 +10,6 @@ services:
     resource: '%kernel.project_dir%/src/TicketSystem/User/Application/*'
     exclude: '%kernel.project_dir%/src/TicketSystem/User/Application/**/{*Request,*Response}'
 
-
-  TicketSystem\User\Application\CreateUser\CreateUserCommand:
-    arguments:
-      $passwordHasher: '@app.user.password.hasher'
-
   TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessToken:
     arguments:
       $passwordVerifier: '@app.user.password.verifier'
@@ -25,6 +20,11 @@ services:
     class: TicketSystem\User\Infrastructure\Domain\Doctrine\DoctrineUserRepository
     arguments:
       $registry: '@doctrine'
+
+  TicketSystem\User\Domain\CreateUser\CreateUser:
+    class: TicketSystem\User\Domain\CreateUser\CreateUser
+    arguments:
+      $passwordHasher: '@app.user.password.hasher'
 
   app.access-token.handler:
     class: TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler

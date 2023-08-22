@@ -57,7 +57,7 @@ class CreateUserTest extends WebTestCase
 
         $client->request('POST', '/v1/user', [
             'email' => 'some-email@example.net',
-            'password' => 'some-password'
+            'password' => 'some-password',
         ]);
 
         self::assertResponseStatusCodeSame(401);

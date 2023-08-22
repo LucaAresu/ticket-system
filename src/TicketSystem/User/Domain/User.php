@@ -17,6 +17,10 @@ class User
 
     public static function create(UserId $id, Email $email, #[\SensitiveParameter] string $password): self
     {
+        if (!$password) {
+            throw new \InvalidArgumentException('The password must not be empty');
+        }
+
         return new self($id, $email, $password);
     }
 

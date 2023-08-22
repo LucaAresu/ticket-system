@@ -29,8 +29,8 @@ class Client
 
     public function get(string $key): null|string
     {
-        /** @var string|null $value */
-        $value =  $this->client->get($key);
+        /** @var null|string $value */
+        $value = $this->client->get($key);
 
         return $value ?: null;
     }
