@@ -37,5 +37,10 @@
                 <referencedMethod name="TicketSystem\Shared\Infrastructure\Redis\Predis\Client::delete" />
             </errorLevel>
         </PossiblyUnusedMethod>
+        <MissingConstructor>
+            <errorLevel type="suppress">
+                <directory name="../../tests"/>
+            </errorLevel>
+        </MissingConstructor>
     </issueHandlers>
 </psalm>

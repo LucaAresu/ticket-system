@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Application\RetrieveAccessToken;
 
-final readonly class RetrieveAccessTokenRequest
+final readonly class RetrieveAccessTokenCommandRequest
 {
     private function __construct(
         public string $userEmail,

@@ -11,6 +11,7 @@ final readonly class UserDto
     private function __construct(
         public UserId $id,
         public Email $email,
+        public string $password
     ) {
     }
 
@@ -18,7 +19,8 @@ final readonly class UserDto
     {
         return new self(
             $user->id,
-            $user->email
+            $user->email,
+            $user->password
         );
     }
 }

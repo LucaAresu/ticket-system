@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Application\GetOwnInfo;
 
-final readonly class GetOwnInfoResponse
+final readonly class GetOwnInfoCommandResponse
 {
     private function __construct(
         public string $userId,

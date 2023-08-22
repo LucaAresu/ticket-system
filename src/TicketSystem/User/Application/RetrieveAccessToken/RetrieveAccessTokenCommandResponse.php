@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace TicketSystem\User\Domain\Login;
+namespace TicketSystem\User\Application\RetrieveAccessToken;
 
-final readonly class GenerateAccessTokenResponse
+final readonly class RetrieveAccessTokenCommandResponse
 {
     private function __construct(#[\SensitiveParameter] public string $accessToken)
     {

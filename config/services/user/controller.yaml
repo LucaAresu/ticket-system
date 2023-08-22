@@ -17,9 +17,9 @@ services:
   TicketSystem\Shared\Application\Command\CommandHandler $retrieveAccessTokenCommand:
     class: TicketSystem\Shared\Application\Command\CommandHandler
     arguments:
-      $command: '@TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessToken'
+      $command: '@TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessTokenCommand'
 
   TicketSystem\Shared\Application\Command\CommandHandler $getOwnInfoCommand:
     class: TicketSystem\Shared\Application\Command\CommandHandler
     arguments:
-      $command: '@TicketSystem\User\Application\GetOwnInfo\GetOwnInfo'
+      $command: '@TicketSystem\User\Application\GetOwnInfo\GetOwnInfoCommand'

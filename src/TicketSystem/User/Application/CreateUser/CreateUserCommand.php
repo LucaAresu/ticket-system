@@ -22,7 +22,7 @@ readonly class CreateUserCommand implements Command
      */
     public function execute($request): CreateUserCommandResponse
     {
-        $this->createUser->execute(
+        $user = $this->createUser->execute(
             CreateUserRequest::create(
                 $request->id,
                 $request->email,
@@ -30,6 +30,9 @@ readonly class CreateUserCommand implements Command
             )
         );
 
-        return CreateUserCommandResponse::create();
+        return CreateUserCommandResponse::create(
+            $user->id->id,
+            $user->email->value
+        );
     }
 }
