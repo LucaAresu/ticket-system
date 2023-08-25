@@ -7,6 +7,7 @@ namespace Tests\Helpers\User\Domain;
 use TicketSystem\Shared\Domain\Email;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
+use TicketSystem\User\Domain\UserRole;
 
 class UserHelper
 {
@@ -25,12 +26,13 @@ class UserHelper
         return 'asd123';
     }
 
-    public static function user(): User
+    public static function user(UserRole $role = UserRole::USER): User
     {
         return User::create(
             UserId::create(self::userId()),
             Email::create(self::email()),
-            self::password()
+            self::password(),
+            $role
         );
     }
 }

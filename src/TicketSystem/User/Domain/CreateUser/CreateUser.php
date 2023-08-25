@@ -11,6 +11,7 @@ use TicketSystem\User\Domain\UserDto;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserPasswordHasher;
 use TicketSystem\User\Domain\UserRepository;
+use TicketSystem\User\Domain\UserRole;
 
 readonly class CreateUser
 {
@@ -36,7 +37,8 @@ readonly class CreateUser
         $user = User::create(
             $this->getUserId($request),
             Email::create($request->email),
-            $this->passwordHasher->execute($request->password)
+            $this->passwordHasher->execute($request->password),
+            UserRole::USER
         );
 
         $this->checkIfUserExist($user);

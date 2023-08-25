@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Tests\Integration\TicketSystem\User\Domain;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use TicketSystem\Shared\Domain\Email;
-use TicketSystem\User\Domain\User;
+use Tests\Helpers\User\Domain\UserHelper;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRepository;
 
@@ -21,16 +20,11 @@ class UserRepositoryTest extends KernelTestCase
         /** @var UserRepository $repository */
         $repository = $container->get('TestUserRepository');
 
-        $id = UserId::create('2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58');
-        $user = User::create(
-            $id,
-            Email::create('prova@example.net'),
-            'fsafs'
-        );
+        $user = UserHelper::user();
 
         $repository->save($user);
 
-        $user2 = $repository->ofId($id);
+        $user2 = $repository->ofId(UserId::create(UserHelper::userId()));
 
         self::assertTrue($user->isEqual($user2));
     }

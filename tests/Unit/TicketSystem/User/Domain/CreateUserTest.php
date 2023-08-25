@@ -13,6 +13,7 @@ use TicketSystem\User\Domain\UserDto;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserPasswordHasher;
 use TicketSystem\User\Domain\UserRepository;
+use TicketSystem\User\Domain\UserRole;
 
 class CreateUserTest extends KernelTestCase
 {
@@ -120,5 +121,23 @@ class CreateUserTest extends KernelTestCase
                 ''
             )
         );
+    }
+
+    /** @test */
+    public function new_users_should_be_role_user(): void
+    {
+        $this->repository->byDefault()->shouldReceive('save')->with(
+            \Mockery::on(static fn (User $user) => UserRole::USER === $user->role())
+        );
+
+        $this->command->execute(
+            CreateUserRequest::create(
+                null,
+                'prova@example.net',
+                'safafsf'
+            )
+        );
+
+        self::assertTrue(true);
     }
 }
