@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Integration\TicketSystem\User\Infrastructure\Communication\Http\Symfony;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Tests\Helpers\User\Domain\CreateUserTrait;
+use Tests\Helpers\User\CreateUserTrait;
 use TicketSystem\Shared\Domain\Email;
 use TicketSystem\User\Domain\UserRepository;
 

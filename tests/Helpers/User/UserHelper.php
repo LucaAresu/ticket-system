@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Helpers\User\Domain;
+namespace Tests\Helpers\User;
 
 use TicketSystem\Shared\Domain\Email;
 use TicketSystem\User\Domain\User;

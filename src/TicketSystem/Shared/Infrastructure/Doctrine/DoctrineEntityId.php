@@ -10,13 +10,20 @@ use TicketSystem\Shared\Domain\EntityId;
 
 abstract class DoctrineEntityId extends GuidType
 {
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): null|string
     {
+        if (null === $value) {
+            return null;
+        }
+
         return $value instanceof EntityId ? $value->id : (string) $value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): EntityId
+    public function convertToPHPValue($value, AbstractPlatform $platform): null|EntityId
     {
+        if (null === $value) {
+            return null;
+        }
         $className = $this->getFQCN();
 
         return $className::create((string) $value);

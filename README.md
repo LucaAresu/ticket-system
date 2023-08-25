@@ -17,7 +17,7 @@ composer install
 - Every User can open a ticket describing their issues
 - A ticket must have a category, title, description and a priority
 - Only User of rank Manager can open an urgent ticket
-- Both support and User can append messages to the support ticket
+- Both Assigned Operator, Super Operator and User can append messages to the support ticket
 - Operators and Super Operators ask the system for the next ticket, and the system assigns the most urgent one in the following order
   - Urgent tickets are always the priority
   - The most urgent ticket already assigned to Operator

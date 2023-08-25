@@ -7,3 +7,9 @@ services:
   TicketSystem\Ticket\Infrastructure\Communication\Http\Symfony\Controller\:
     resource: '%kernel.project_dir%/src/TicketSystem/Ticket/Infrastructure/Communication/Http/Symfony/Controller'
     tags: ['controller.service_arguments']
+
+
+  TicketSystem\Shared\Application\Command\CommandHandler $createTicketCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\Ticket\Application\CreateTicket\CreateTicketCommand'

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Domain;
 
+use TicketSystem\Shared\Domain\Aggregate;
 use TicketSystem\Shared\Domain\Email;
 
-class User
+class User implements Aggregate
 {
     private function __construct(
         public readonly UserId $id,
@@ -14,14 +15,13 @@ class User
         #[\SensitiveParameter] private string $password,
         private UserRole $role
     ) {
+        if (!$password) {
+            throw new \InvalidArgumentException('The password must not be empty');
+        }
     }
 
     public static function create(UserId $id, Email $email, #[\SensitiveParameter] string $password, UserRole $role): self
     {
-        if (!$password) {
-            throw new \InvalidArgumentException('The password must not be empty');
-        }
-
         return new self($id, $email, $password, $role);
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\TicketSystem\User\Application;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\UserHelper;
 use TicketSystem\Shared\Domain\DomainException;
 use TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessTokenCommand;
 use TicketSystem\User\Application\RetrieveAccessToken\RetrieveAccessTokenCommandRequest;

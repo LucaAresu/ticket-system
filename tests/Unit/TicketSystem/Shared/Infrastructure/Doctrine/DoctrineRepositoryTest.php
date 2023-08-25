@@ -6,7 +6,10 @@ namespace Tests\Unit\TicketSystem\Shared\Infrastructure\Doctrine;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Test\TestCase;
+use Tests\Helpers\User\UserHelper;
+use TicketSystem\Shared\Domain\EntityId;
 use TicketSystem\Shared\Infrastructure\Doctrine\DoctrineRepository;
+use TicketSystem\User\Domain\UserId;
 
 class DoctrineRepositoryTest extends TestCase
 {
@@ -19,6 +22,11 @@ class DoctrineRepositoryTest extends TestCase
         $this->expectException(\LogicException::class);
 
         $class = new class($mockRegistry) extends DoctrineRepository {
+            public function nextId(): EntityId
+            {
+                return UserId::create(UserHelper::userId());
+            }
+
             protected function getEntityClassName(): string
             {
                 return 'a';

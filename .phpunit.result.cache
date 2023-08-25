@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Tests\\Unit\\TicketSystem\\Ticket\\Domain\\CreateTicketTest::it_should_create_a_urgent_ticket_if_manager":8},"times":{"Tests\\Unit\\TicketSystem\\Ticket\\Domain\\CreateTicketTest::it_should_create_a_urgent_ticket_if_manager":0.024}}

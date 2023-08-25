@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\TicketSystem\User\Domain;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\UserHelper;
 use TicketSystem\Shared\Domain\DomainException;
 use TicketSystem\User\Domain\GetUserInfo;
 use TicketSystem\User\Domain\UserId;
@@ -52,7 +52,7 @@ class GetUserInfoTest extends TestCase
     {
         $this->userRepository->shouldReceive('ofId')->once()->andReturn(null);
 
-        self::expectException(DomainException::class);
+        $this->expectException(DomainException::class);
 
         $this->getOwnInfo->execute(UserId::create(UserHelper::userId()));
     }

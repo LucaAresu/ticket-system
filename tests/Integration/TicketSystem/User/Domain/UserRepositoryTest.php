@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Integration\TicketSystem\User\Domain;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\UserHelper;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRepository;
 

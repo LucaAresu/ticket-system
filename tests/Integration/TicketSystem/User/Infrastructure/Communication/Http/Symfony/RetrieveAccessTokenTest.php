@@ -6,8 +6,8 @@ namespace Tests\Integration\TicketSystem\User\Infrastructure\Communication\Http\
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Tests\Helpers\User\Domain\CreateUserTrait;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\CreateUserTrait;
+use Tests\Helpers\User\UserHelper;
 
 class RetrieveAccessTokenTest extends WebTestCase
 {

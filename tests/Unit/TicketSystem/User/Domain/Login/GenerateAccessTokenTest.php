@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\TicketSystem\User\Domain\Login;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\UserHelper;
 use TicketSystem\User\Domain\AccessToken\GenerateAccessToken;
 use TicketSystem\User\Domain\AccessToken\StoreAccessToken;
 use TicketSystem\User\Domain\UserId;
