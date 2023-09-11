@@ -37,6 +37,8 @@ readonly class CreateUser
         $user = User::create(
             $this->getUserId($request),
             Email::create($request->email),
+            $request->name,
+            $request->lastname,
             $this->passwordHasher->execute($request->password),
             UserRole::USER
         );

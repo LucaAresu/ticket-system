@@ -30,6 +30,8 @@ class UserController extends Controller
             CreateUserCommandRequest::create(
                 ((string) $request->request->get('id')) ?: null,
                 (string) ($request->request->get('email') ?? ''),
+                (string) ($request->request->get('name') ?? ''),
+                (string) ($request->request->get('lastname') ?? ''),
                 (string) $request->request->get('password')
             )
         );

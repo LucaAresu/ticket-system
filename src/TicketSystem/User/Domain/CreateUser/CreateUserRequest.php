@@ -9,6 +9,8 @@ final readonly class CreateUserRequest
     private function __construct(
         public null|string $id,
         public string $email,
+        public string $name,
+        public string $lastname,
         #[\SensitiveParameter] public string $password
     ) {
     }
@@ -16,8 +18,10 @@ final readonly class CreateUserRequest
     public static function create(
         null|string $id,
         string $email,
+        string $name,
+        string $lastname,
         #[\SensitiveParameter] string $password
     ): self {
-        return new self($id, $email, $password);
+        return new self($id, $email, $name, $lastname, $password);
     }
 }

@@ -31,6 +31,8 @@ class UserHelper
         return User::create(
             UserId::create(self::userId()),
             Email::create(self::email()),
+            'Billy',
+            'Something',
             self::password(),
             $role
         );

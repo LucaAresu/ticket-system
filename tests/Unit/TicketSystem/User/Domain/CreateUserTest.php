@@ -55,6 +55,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 '2dc415af-1c4c-43e5-83b6-b4f4bd7e3e58',
                 'prova@example.net',
+                'Billy',
+                'Something',
                 'asfasf'
             )
         );
@@ -71,6 +73,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 null,
                 'wrong-email',
+                'Billy',
+                'Something',
                 'safas'
             )
         );
@@ -87,6 +91,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 null,
                 'prova@example.net',
+                'Billy',
+                'Something',
                 'safas'
             )
         );
@@ -103,6 +109,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 null,
                 'prova@example.net',
+                'Billy',
+                'Something',
                 'sfafas'
             )
         );
@@ -118,6 +126,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 null,
                 'prova@example.net',
+                'Billy',
+                'Something',
                 ''
             )
         );
@@ -134,6 +144,8 @@ class CreateUserTest extends KernelTestCase
             CreateUserRequest::create(
                 null,
                 'prova@example.net',
+                'Billy',
+                'Something',
                 'safafsf'
             )
         );

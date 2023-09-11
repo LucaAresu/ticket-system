@@ -23,6 +23,8 @@ class CreateUserTest extends WebTestCase
         $client->request('POST', '/v1/user', [
             'id' => '',
             'email' => 'prova2@example.net',
+            'name' => 'Billy',
+            'lastname' => 'Something',
             'password' => 'fsafas',
         ]);
 
@@ -57,6 +59,8 @@ class CreateUserTest extends WebTestCase
 
         $client->request('POST', '/v1/user', [
             'email' => 'some-email@example.net',
+            'name' => 'Billy',
+            'lastname' => 'Something',
             'password' => 'some-password',
         ]);
 

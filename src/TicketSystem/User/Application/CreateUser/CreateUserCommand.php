@@ -26,6 +26,8 @@ readonly class CreateUserCommand implements Command
             CreateUserRequest::create(
                 $request->id,
                 $request->email,
+                $request->name,
+                $request->lastname,
                 $request->password
             )
         );

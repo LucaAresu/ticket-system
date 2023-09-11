@@ -20,6 +20,8 @@ trait CreateUserTrait
             CreateUserRequest::create(
                 UserHelper::userId(),
                 UserHelper::email(),
+                'Billy',
+                'Something',
                 UserHelper::password()
             )
         );

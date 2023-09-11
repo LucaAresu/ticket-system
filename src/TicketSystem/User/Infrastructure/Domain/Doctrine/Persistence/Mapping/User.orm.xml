@@ -6,6 +6,8 @@
     <entity name="TicketSystem\User\Domain\User" table="users">
         <id name="id" type="UserId" column="id" />
         <field name="email" type="Email" column="email" nullable="false" />
+        <field name="name" type="string" column="name" nullable="false" />
+        <field name="lastname" type="string" column="lastname" nullable="false" />
         <field name="password" type="string" column="password" nullable="false" />
         <field name="role" enum-type="TicketSystem\User\Domain\UserRole" column="role" nullable="false" />
     </entity>
