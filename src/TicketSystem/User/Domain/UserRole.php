@@ -10,4 +10,12 @@ enum UserRole: string
     case MANAGER = 'MANAGER';
     case OPERATOR = 'OPERATOR';
     case SUPER_OPERATOR = 'SUPER_OPERATOR';
+
+    public static function operatorRoles(): array
+    {
+        return [
+            self::OPERATOR,
+            self::SUPER_OPERATOR,
+        ];
+    }
 }

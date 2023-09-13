@@ -6,11 +6,18 @@ namespace TicketSystem\User\Domain;
 
 use TicketSystem\Shared\Domain\Aggregate;
 use TicketSystem\Shared\Domain\Email;
+use TicketSystem\Ticket\Domain\TicketCategory;
+use TicketSystem\User\Domain\Operator\NotOperatorException;
+use TicketSystem\User\Domain\Operator\Operator;
+use TicketSystem\User\Domain\Operator\OperatorId;
+use TicketSystem\User\Domain\Operator\OperatorMustBeAssignedToCategoryException;
 
 class User implements Aggregate
 {
     public const NAME_MAX_LENGTH = 64;
     public const LASTNAME_MAX_LENGTH = 64;
+
+    private null|Operator $operator = null;
 
     private function __construct(
         public readonly UserId $id,
@@ -30,11 +37,15 @@ class User implements Aggregate
         }
 
         if ('' === $name || strlen($name) > self::NAME_MAX_LENGTH) {
-            throw new \InvalidArgumentException(sprintf('Name must not be empty and not longer than %d chars', self::NAME_MAX_LENGTH));
+            throw new \InvalidArgumentException(
+                sprintf('Name must not be empty and not longer than %d chars', self::NAME_MAX_LENGTH)
+            );
         }
 
         if ('' === $lastname || strlen($lastname) > self::LASTNAME_MAX_LENGTH) {
-            throw new \InvalidArgumentException(sprintf('Lastname must not be empty and not longer than %d chars', self::NAME_MAX_LENGTH));
+            throw new \InvalidArgumentException(
+                sprintf('Lastname must not be empty and not longer than %d chars', self::NAME_MAX_LENGTH)
+            );
         }
     }
 
@@ -62,5 +73,53 @@ class User implements Aggregate
     public function role(): UserRole
     {
         return $this->role;
+    }
+
+    public function become(UserRole $role, null|TicketCategory $ticketCategory = null): self
+    {
+        $this->role = $role;
+
+        if (in_array($role, UserRole::operatorRoles())) {
+            $this->becomeOperator($role, $ticketCategory);
+        }
+
+        return $this;
+    }
+
+    private function becomeOperator(UserRole $role, null|TicketCategory $ticketCategory = null): void
+    {
+        if (UserRole::OPERATOR === $role && null === $ticketCategory) {
+            throw OperatorMustBeAssignedToCategoryException::create();
+        }
+
+        $this->operator = Operator::create(
+            OperatorId::create($this->id->id),
+            $this,
+            $this->isSuperOperator() ? null : $ticketCategory
+        );
+    }
+
+    public function isOperator(): bool
+    {
+        return null !== $this->operator;
+    }
+
+    public function isSuperOperator(): bool
+    {
+        return $this->isOperator() && UserRole::SUPER_OPERATOR === $this->role;
+    }
+
+    public function operatorCategory(): null|TicketCategory
+    {
+        return $this->operatorOrFail()->assignedCategory();
+    }
+
+    private function operatorOrFail(): Operator
+    {
+        if (null === $this->operator) {
+            throw NotOperatorException::create($this->id);
+        }
+
+        return $this->operator;
     }
 }

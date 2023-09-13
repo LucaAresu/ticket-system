@@ -39,5 +39,15 @@
                 <referencedMethod name="*::isEqual" />
             </errorLevel>
         </PossiblyUnusedMethod>
+        <PossiblyUnusedReturnValue>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/**/*Command.php" />
+            </errorLevel>
+        </PossiblyUnusedReturnValue>
+        <UnusedProperty>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/User/Domain/Operator/Operator.php" />
+            </errorLevel>
+        </UnusedProperty>
     </issueHandlers>
 </psalm>

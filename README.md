@@ -64,7 +64,7 @@ composer install
   - The Operators have taken 3 penalties within a week
 - An Operator stops being a Controlled Operator if no ticket in the last 10 has not been escalated and the rank is over 4 stars
 - When a New Operator ticket is closed, a Super Operator can accept the rank given by the User or resolve the ticket
-- An Operator or Super Operator can be assigned to only one category
+- An Operator can be assigned to only one category Super Operators are assigned to all categories
 
 
 ## Users

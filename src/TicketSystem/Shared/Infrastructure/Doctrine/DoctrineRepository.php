@@ -46,6 +46,7 @@ abstract class DoctrineRepository implements Repository
      */
     public function ofId(EntityId $id): null|Aggregate
     {
+        $this->em->clear();
         /** @var null|E $aggregate */
         $aggregate = $this->createSelect()
             ->andWhere(sprintf('%s.id = :id', $this->getEntityAliasName()))
