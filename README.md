@@ -36,7 +36,7 @@ composer install
   - The comment is required when the rating is 1
   - Super Operator tickets can't be rated
 - A User must be notified to rate a ticket when the ticket is closed and every week
-- New Operators ticket when closed must be notified to a Super Agent
+- New Operators ticket when closed must be notified to a Super Operator
 
 ### Categories
 - HR
@@ -72,5 +72,3 @@ composer install
 - Managers have no limits
 - People can register and become Users 
   - Name, Lastname and Email and Password must be provided
-- Every User (including Operator and Super Operator) receives a nickname based on name and numbers in the format Name-1234
-- Users can Open an HR Ticket changing to change nickname, the new nickname must follow the same rule
