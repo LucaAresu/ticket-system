@@ -6,7 +6,7 @@ namespace Tests\Unit\TicketSystem\User\Infrastructure\Symfony\Security\AccessTok
 
 use Monolog\Test\TestCase;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Tests\Helpers\User\Domain\UserHelper;
+use Tests\Helpers\User\UserHelper;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserRepository;
 use TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenHandler;

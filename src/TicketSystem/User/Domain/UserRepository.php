@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace TicketSystem\User\Domain;
 
 use TicketSystem\Shared\Domain\Email;
+use TicketSystem\Shared\Domain\Repository;
 
-interface UserRepository
+/**
+ * @template-extends Repository<User, UserId>
+ */
+interface UserRepository extends Repository
 {
-    public function nextId(): UserId;
-
-    public function ofId(UserId $id): null|User;
-
     public function ofEmail(Email $email): null|User;
-
-    public function save(User $user): void;
 }

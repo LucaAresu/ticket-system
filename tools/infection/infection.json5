@@ -8,6 +8,7 @@
     "phpUnit": {
         "configDir": "../../tools/phpunit"
     },
+    "timeout": 30,
     "logs": {
         "text": "log/log.txt",
         html: "log/log.html"

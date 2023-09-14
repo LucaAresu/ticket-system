@@ -17,7 +17,7 @@ composer install
 - Every User can open a ticket describing their issues
 - A ticket must have a category, title, description and a priority
 - Only User of rank Manager can open an urgent ticket
-- Both support and User can append messages to the support ticket
+- Both Assigned Operator, Super Operator and User can append messages to the support ticket
 - Operators and Super Operators ask the system for the next ticket, and the system assigns the most urgent one in the following order
   - Urgent tickets are always the priority
   - The most urgent ticket already assigned to Operator
@@ -64,7 +64,7 @@ composer install
   - The Operators have taken 3 penalties within a week
 - An Operator stops being a Controlled Operator if no ticket in the last 10 has not been escalated and the rank is over 4 stars
 - When a New Operator ticket is closed, a Super Operator can accept the rank given by the User or resolve the ticket
-- An Operator or Super Operator can be assigned to only one category
+- An Operator can be assigned to only one category Super Operators are assigned to all categories
 
 
 ## Users

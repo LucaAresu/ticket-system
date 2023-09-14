@@ -9,6 +9,8 @@ doctrine:
             collate: utf8_general_ci
         types:
             UserId: TicketSystem\User\Infrastructure\Domain\Doctrine\DoctrineUserId
+            TicketId: TicketSystem\Ticket\Infrastructure\Domain\Doctrine\DoctrineTicketId
+            OperatorId: TicketSystem\User\Infrastructure\Domain\Doctrine\DoctrineOperatorId
             Email: TicketSystem\Shared\Infrastructure\Doctrine\DoctrineEmail
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
@@ -25,6 +27,12 @@ doctrine:
                         type: xml
                         dir: "%kernel.project_dir%/src/TicketSystem/User/Infrastructure/Domain/Doctrine/Persistence/Mapping"
                         prefix: 'TicketSystem\User\Domain'
+
+                    Ticket:
+                        is_bundle: false
+                        type: xml
+                        dir: "%kernel.project_dir%/src/TicketSystem/Ticket/Infrastructure/Domain/Doctrine/Persistence/Mapping"
+                        prefix: 'TicketSystem\Ticket\Domain'
 
 when@test:
     doctrine:

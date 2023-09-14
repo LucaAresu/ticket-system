@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\TicketSystem\User\Domain\Login;
 
 use PHPUnit\Framework\TestCase;
-use Tests\Helpers\User\Domain\UserHelper;
-use TicketSystem\User\Domain\Login\GenerateAccessToken;
-use TicketSystem\User\Domain\Login\StoreAccessToken;
+use Tests\Helpers\User\UserHelper;
+use TicketSystem\User\Domain\AccessToken\GenerateAccessToken;
+use TicketSystem\User\Domain\AccessToken\StoreAccessToken;
 use TicketSystem\User\Domain\UserId;
 
 class GenerateAccessTokenTest extends TestCase

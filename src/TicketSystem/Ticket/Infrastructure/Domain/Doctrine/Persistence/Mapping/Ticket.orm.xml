@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="TicketSystem\Ticket\Domain\Ticket" table="tickets">
+        <id name="id" type="TicketId" column="id" />
+        <field name="title" type="string" column="title" nullable="false" />
+        <field name="content" type="string" column="content" nullable="false" />
+        <field name="status" enum-type="TicketSystem\Ticket\Domain\TicketStatus" column="status" nullable="false" />
+        <field name="priority" enum-type="TicketSystem\Ticket\Domain\TicketPriority" column="priority" nullable="false" />
+        <field name="category" enum-type="TicketSystem\Ticket\Domain\TicketCategory" column="category" nullable="false" />
+        <field name="opener" type="UserId" column="opener" nullable="false" />
+        <field name="operator" type="UserId" column="operator" nullable="true" />
+        <field name="createdAt" type="datetime_immutable" column="created_at" nullable="false" />
+        <field name="updatedAt" type="datetime" column="updated_at" nullable="false" />
+    </entity>
+</doctrine-mapping>

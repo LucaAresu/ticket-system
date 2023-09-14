@@ -7,15 +7,15 @@ namespace TicketSystem\User\Application\CreateUser;
 final readonly class CreateUserCommandResponse
 {
     private function __construct(
-        public bool $success,
-        public null|string $message
+        public string $id,
+        public string $email
     ) {
     }
 
     public static function create(
-        bool $success,
-        null|string $message = null
+        string $id,
+        string $email
     ): self {
-        return new self($success, $message);
+        return new self($id, $email);
     }
 }

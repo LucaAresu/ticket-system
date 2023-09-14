@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="TicketSystem\User\Domain\Operator\Operator" table="operators">
+        <id name="id" type="OperatorId" column="id" />
+        <one-to-one field="user" target-entity="TicketSystem\User\Domain\User">
+            <join-column name="user_id" referenced-column-name="id"  />
+        </one-to-one>
+        <field name="assignedCategory" enum-type="TicketSystem\Ticket\Domain\TicketCategory" column="category" nullable="false" />
+    </entity>
+</doctrine-mapping>

@@ -29,13 +29,25 @@
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <file name="../../src/TicketSystem/**/*Response.php" />
+                <file name="../../src/TicketSystem/**/*Dto.php" />
             </errorLevel>
         </PossiblyUnusedProperty>
         <PossiblyUnusedMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="*::__construct" />
                 <referencedMethod name="TicketSystem\Shared\Infrastructure\Redis\Predis\Client::delete" />
+                <referencedMethod name="*::isEqual" />
             </errorLevel>
         </PossiblyUnusedMethod>
+        <PossiblyUnusedReturnValue>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/**/*Command.php" />
+            </errorLevel>
+        </PossiblyUnusedReturnValue>
+        <UnusedProperty>
+            <errorLevel type="suppress">
+                <file name="../../src/TicketSystem/User/Domain/Operator/Operator.php" />
+            </errorLevel>
+        </UnusedProperty>
     </issueHandlers>
 </psalm>

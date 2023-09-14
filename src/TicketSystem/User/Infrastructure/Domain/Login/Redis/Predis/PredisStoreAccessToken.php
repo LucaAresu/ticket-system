@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TicketSystem\User\Infrastructure\Domain\Login\Redis\Predis;
 
-use TicketSystem\User\Domain\Login\StoreAccessToken;
+use TicketSystem\User\Domain\AccessToken\StoreAccessToken;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Infrastructure\Symfony\Security\AccessToken\AccessTokenRepository;
 

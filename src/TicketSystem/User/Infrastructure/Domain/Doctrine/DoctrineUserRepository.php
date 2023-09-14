@@ -12,6 +12,9 @@ use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRepository;
 
+/**
+ * @template-extends DoctrineRepository<User, UserId>
+ */
 class DoctrineUserRepository extends DoctrineRepository implements UserRepository
 {
     protected function getEntityClassName(): string
@@ -30,27 +33,6 @@ class DoctrineUserRepository extends DoctrineRepository implements UserRepositor
         return UserId::create(
             Uuid::uuid4()->toString()
         );
-    }
-
-    public function save(User $user): void
-    {
-        $this->em->persist($user);
-        $this->em->flush();
-    }
-
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function ofId(UserId $id): null|User
-    {
-        /** @var null|User $user */
-        $user = $this->createSelect()
-            ->andWhere(sprintf('%s.id = :id', $this->getEntityAliasName()))
-            ->setParameter('id', $id, \PDO::PARAM_STR)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $user;
     }
 
     /**
