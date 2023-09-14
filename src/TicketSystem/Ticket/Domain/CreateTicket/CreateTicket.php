@@ -62,8 +62,8 @@ class CreateTicket
 
     private function canUserOpenATicketInCategory(User $ticketOpener, TicketCategory $ticketCategory): bool
     {
-        return 0 === $this->ticketRepository->getOpenTicketsCountForUserInCategory($ticketOpener->id, $ticketCategory)
-        || UserRole::MANAGER === $ticketOpener->role();
+        return UserRole::MANAGER === $ticketOpener->role()
+            || 0 === $this->ticketRepository->getOpenTicketsCountForUserInCategory($ticketOpener->id, $ticketCategory);
     }
 
     /**
