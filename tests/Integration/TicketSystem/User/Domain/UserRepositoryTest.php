@@ -9,44 +9,41 @@ use Tests\Helpers\User\UserHelper;
 use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRepository;
+use TicketSystem\User\Domain\UserRole;
 
 class UserRepositoryTest extends KernelTestCase
 {
-    /** @test */
-    public function it_should_save_an_user(): void
+    private UserRepository $userRepository;
+    public function setUp(): void
     {
         self::bootKernel();
         $container = self::$kernel->getContainer();
 
-        /** @var UserRepository $repository */
-        $repository = $container->get('TestUserRepository');
+        $this->userRepository = $container->get('TestUserRepository');
+    }
 
+    /** @test */
+    public function it_should_save_an_user(): void
+    {
         $user = UserHelper::user();
 
-        $repository->save($user);
+        $this->userRepository->save($user);
 
-        $user2 = $repository->ofId(UserId::create(UserHelper::userId()));
+        $user2 = $this->userRepository->ofId(UserId::create(UserHelper::userId()));
 
         self::assertTrue($user->isEqual($user2));
     }
 
-    public function prova_qualcosa_boh(): void
+    /** @test */
+    public function it_should_become_operator(): void
     {
-        self::bootKernel();
-        $container = self::$kernel->getContainer();
+        $user = UserHelper::user();
+        $user->become(UserRole::OPERATOR, TicketCategory::MARKETING);
 
-        /** @var UserRepository $repository */
-        $repository = $container->get('TestUserRepository');
+        $this->userRepository->save($user);
 
-        $a = $repository->ofId(UserId::create('98109a2c-50f1-4ee2-b88a-70385dddb62b'));
+        $user2 = $this->userRepository->ofId(UserId::create(UserHelper::userId()));
 
-        $a->bla();
-
-        $repository->save($a);
-
-        $b = $repository->ofId(UserId::create('98109a2c-50f1-4ee2-b88a-70385dddb62b'));
-
-        self::assertEquals(TicketCategory::MARKETING, $b->operator->assignedCategory());
-        $this->fail('test da completare');
+        self::assertEquals(TicketCategory::MARKETING, $user2->operatorCategory());
     }
 }

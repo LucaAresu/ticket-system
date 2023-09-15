@@ -15,6 +15,12 @@ services:
       $host: '%env(resolve:REDIS_HOST)%'
       $port: '%env(resolve:REDIS_PORT)%'
 
+  app.init.users:
+    class: App\Command\InitUsers
+    tags: ['console.command']
+    arguments:
+      $userRepository: '@app.user.repository'
+
 when@test:
   services:
     TestRedisClient:

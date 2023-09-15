@@ -7,6 +7,7 @@ namespace Tests\Unit\TicketSystem\User\Domain;
 use Monolog\Test\TestCase;
 use Tests\Helpers\User\UserHelper;
 use TicketSystem\Shared\Domain\Email;
+use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\User\Domain\Operator\NotOperatorException;
 use TicketSystem\User\Domain\Operator\OperatorMustBeAssignedToCategoryException;
 use TicketSystem\User\Domain\User;
@@ -129,5 +130,15 @@ class UserTest extends TestCase
         $this->expectException(NotOperatorException::class);
 
         $user->operatorCategory();
+    }
+
+    /** @test */
+    public function it_should_become_operator_and_have_assigned_category(): void
+    {
+        $user = UserHelper::user();
+
+        $user->become(UserRole::OPERATOR, TicketCategory::MARKETING);
+
+        self::assertEquals(TicketCategory::MARKETING, $user->operatorCategory());
     }
 }

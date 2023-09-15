@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TicketSystem\User\Infrastructure\Communication\Cli\Symfony\Command;
+namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +16,7 @@ use TicketSystem\User\Domain\UserRepository;
 use TicketSystem\User\Domain\UserRole;
 use Webmozart\Assert\Assert;
 
-class SymfonyCommandInitUsers extends Command
+class InitUsers extends Command
 {
     public function __construct(
         private UserRepository $userRepository,
@@ -44,7 +44,7 @@ class SymfonyCommandInitUsers extends Command
     {
         $this->createUserCommand->execute(
             CreateUserCommandRequest::create(
-                null,
+                '9fa02cc4-06df-42b1-9163-7d9c44774f46',
                 'user@example.net',
                 'User',
                 'User',
@@ -59,7 +59,7 @@ class SymfonyCommandInitUsers extends Command
 
         $this->createUserCommand->execute(
             CreateUserCommandRequest::create(
-                null,
+                '265765b4-4918-4871-af80-b33682139ef4',
                 $email,
                 'Manager',
                 'Manager',
@@ -83,7 +83,7 @@ class SymfonyCommandInitUsers extends Command
 
         $this->createUserCommand->execute(
             CreateUserCommandRequest::create(
-                null,
+                'e1cfa3a8-e244-4df8-bc54-e338105b40e3',
                 $email,
                 'Operator',
                 'Operator',
@@ -106,7 +106,7 @@ class SymfonyCommandInitUsers extends Command
 
         $this->createUserCommand->execute(
             CreateUserCommandRequest::create(
-                null,
+                'bad08387-f837-48b0-bc49-900d6a1014ff',
                 $email,
                 'SuperOperator',
                 'SuperOperator',
