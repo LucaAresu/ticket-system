@@ -67,12 +67,6 @@ services:
     arguments:
       $database: '%env(resolve:ACCESS_TOKEN_DATABASE)%'
 
-  app.init.users:
-    class: TicketSystem\User\Infrastructure\Communication\Cli\Symfony\Command\SymfonyCommandInitUsers
-    tags: ['console.command']
-    arguments:
-      $userRepository: '@app.user.repository'
-
   app.user.provider:
     class: TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUserProvider
 
