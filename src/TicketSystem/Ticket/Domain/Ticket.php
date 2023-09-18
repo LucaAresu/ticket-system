@@ -14,10 +14,11 @@ final class Ticket implements Aggregate
     private const TICKET_TITLE_MAX_LENGTH = 128;
     private const TICKET_CONTENT_MAX_LENGTH = 2048;
     public readonly \DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $expiration;
 
     private TicketStatus $status;
     private null|UserId $operator;
-    private \DateTime $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     private function __construct(
         public readonly TicketId $id,
@@ -26,14 +27,14 @@ final class Ticket implements Aggregate
         private TicketPriority $priority,
         public readonly TicketCategory $category,
         public readonly UserId $opener,
+        \DateTimeImmutable $createdAt = null,
     ) {
         $this->status = TicketStatus::WAITING_FOR_SUPPORT;
         $this->operator = null;
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTime();
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->updatedAt = $createdAt ?? new \DateTimeImmutable();
 
-        $this->validateTitle($title);
-        $this->validateContent($content);
+        $this->calculateExpiration();
     }
 
     public static function create(
@@ -43,14 +44,45 @@ final class Ticket implements Aggregate
         TicketPriority $priority,
         TicketCategory $category,
         User $opener,
+        \DateTimeImmutable $createdAt = null,
     ): self {
-        $instance = new self($id, $title, $content, $priority, $category, $opener->id);
+        $instance = new self($id, $title, $content, $priority, $category, $opener->id, $createdAt);
 
         $instance->validateTitle($title);
         $instance->validateContent($content);
         $instance->validatePriority($priority, $opener);
 
         return $instance;
+    }
+
+    public function status(): TicketStatus
+    {
+        return $this->status;
+    }
+
+    public function priority(): TicketPriority
+    {
+        return $this->priority;
+    }
+
+    public function operator(): null|UserId
+    {
+        return $this->operator;
+    }
+
+    public function expiration(): \DateTimeImmutable
+    {
+        return $this->expiration;
+    }
+
+    public function updatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function isEqual(Ticket $ticket): bool
+    {
+        return $this->id->isEqual($ticket->id);
     }
 
     private function validateTitle(string $title): void
@@ -96,28 +128,10 @@ final class Ticket implements Aggregate
         }
     }
 
-    public function status(): TicketStatus
+    private function calculateExpiration(): void
     {
-        return $this->status;
-    }
-
-    public function priority(): TicketPriority
-    {
-        return $this->priority;
-    }
-
-    public function operator(): null|UserId
-    {
-        return $this->operator;
-    }
-
-    public function updatedAt(): \DateTimeImmutable
-    {
-        return \DateTimeImmutable::createFromMutable($this->updatedAt);
-    }
-
-    public function isEqual(Ticket $ticket): bool
-    {
-        return $this->id->isEqual($ticket->id);
+        $this->expiration = $this->updatedAt->add(
+            $this->priority->expirationIntervalBasedOnUrgency()
+        );
     }
 }

@@ -14,6 +14,7 @@ use TicketSystem\User\Domain\UserRole;
 class UserRepositoryTest extends KernelTestCase
 {
     private UserRepository $userRepository;
+
     public function setUp(): void
     {
         self::bootKernel();

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\TicketSystem\Ticket\Domain;
 
 use Monolog\Test\TestCase;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Helpers\Ticket\TicketHelper;
 use Tests\Helpers\User\UserHelper;
 use TicketSystem\Ticket\Domain\Ticket;
 use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\Ticket\Domain\TicketId;
 use TicketSystem\Ticket\Domain\TicketPriority;
+use TicketSystem\User\Domain\UserRole;
 
 class TicketTest extends TestCase
 {
@@ -110,5 +113,25 @@ class TicketTest extends TestCase
         );
 
         self::assertTrue(true);
+    }
+
+    #[DataProviderExternal(TicketTestDataProvider::class, 'expirationBasedOnUrgency')]
+    #[Test]
+    public function it_should_calculate_expiration_date_based_on_urgency(TicketPriority $priority, string $createdAt, string $expectedExpiration): void
+    {
+        $user = UserHelper::user();
+        $user->become(UserRole::MANAGER);
+
+        $ticket = Ticket::create(
+            TicketId::create(TicketHelper::id()),
+            'fsafasfsa',
+            'sfafsafas',
+            $priority,
+            TicketCategory::MARKETING,
+            $user,
+            new \DateTimeImmutable($createdAt),
+        );
+
+        self::assertEquals($ticket->expiration(), new \DateTimeImmutable($expectedExpiration));
     }
 }
