@@ -114,6 +114,11 @@ class User implements Aggregate
         return $this->operatorOrFail()->assignedCategory();
     }
 
+    public function operatorId(): OperatorId
+    {
+        return $this->operatorOrFail()->id;
+    }
+
     private function operatorOrFail(): Operator
     {
         if (null === $this->operator) {

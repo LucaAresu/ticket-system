@@ -11,9 +11,9 @@
 >
     <projectFiles>
         <directory name="../../src" />
+        <directory name="../../src/App" />
         <ignoreFiles>
             <directory name="../../vendor" />
-            <directory name="../../src/App" />
             <file name="../../tests/bootstrap.php" />
         </ignoreFiles>
     </projectFiles>

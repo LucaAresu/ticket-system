@@ -11,7 +11,7 @@
         <field name="priority" enum-type="TicketSystem\Ticket\Domain\TicketPriority" column="priority" nullable="false" />
         <field name="category" enum-type="TicketSystem\Ticket\Domain\TicketCategory" column="category" nullable="false" />
         <field name="opener" type="UserId" column="opener" nullable="false" />
-        <field name="operator" type="UserId" column="operator" nullable="true" />
+        <field name="operator" type="OperatorId" column="operator" nullable="true" />
         <field name="expiration" type="datetime_immutable" column="expiration" nullable="false" />
         <field name="createdAt" type="datetime_immutable" column="created_at" nullable="false" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" nullable="false" />

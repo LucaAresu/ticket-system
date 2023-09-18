@@ -10,7 +10,6 @@ services:
     resource: '%kernel.project_dir%/src/TicketSystem/Ticket/Application/*'
     exclude: '%kernel.project_dir%/src/TicketSystem/Ticket/Application/**/{*Request,*Response}'
 
-
   # Domain
   app.ticket.repository:
     class: TicketSystem\Ticket\Infrastructure\Domain\Doctrine\DoctrineTicketRepository
@@ -23,6 +22,11 @@ services:
       $ticketRepository: '@app.ticket.repository'
       $userRepository: '@app.user.repository'
 
+  TicketSystem\Ticket\Domain\NextTicket\NextTicket:
+    class: TicketSystem\Ticket\Domain\NextTicket\NextTicket
+    arguments:
+      $ticketRepository: '@app.ticket.repository'
+      $userRepository: '@app.user.repository'
 
 when@test:
   services:

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TicketSystem\Ticket\Domain;
 
 use TicketSystem\Shared\Domain\Aggregate;
+use TicketSystem\User\Domain\Operator\OperatorId;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRole;
@@ -17,7 +18,7 @@ final class Ticket implements Aggregate
     private \DateTimeImmutable $expiration;
 
     private TicketStatus $status;
-    private null|UserId $operator;
+    private null|OperatorId $operator;
     private \DateTimeImmutable $updatedAt;
 
     private function __construct(
@@ -65,7 +66,7 @@ final class Ticket implements Aggregate
         return $this->priority;
     }
 
-    public function operator(): null|UserId
+    public function operator(): null|OperatorId
     {
         return $this->operator;
     }
@@ -80,9 +81,22 @@ final class Ticket implements Aggregate
         return $this->updatedAt;
     }
 
-    public function isEqual(Ticket $ticket): bool
+    public function isEqual(null|Ticket $ticket): bool
     {
+        if (null === $ticket) {
+            return false;
+        }
+
         return $this->id->isEqual($ticket->id);
+    }
+
+    public function assignTo(OperatorId $operator): self
+    {
+        $this->operator = $operator;
+
+        $this->ticketUpdated();
+
+        return $this;
     }
 
     private function validateTitle(string $title): void
@@ -133,5 +147,10 @@ final class Ticket implements Aggregate
         $this->expiration = $this->updatedAt->add(
             $this->priority->expirationIntervalBasedOnUrgency()
         );
+    }
+
+    private function ticketUpdated(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

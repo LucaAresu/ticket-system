@@ -14,7 +14,7 @@ class AccessTokenRepositoryTest extends TestCase
     private Client $client;
     private AccessTokenRepository $accessTokenRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = \Mockery::mock(Client::class);
 

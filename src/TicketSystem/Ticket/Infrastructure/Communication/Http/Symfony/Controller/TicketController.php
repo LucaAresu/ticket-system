@@ -10,6 +10,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use TicketSystem\Shared\Application\Command\CommandHandler;
 use TicketSystem\Shared\Infrastructure\Symfony\Communication\Http\Controller\Controller;
 use TicketSystem\Ticket\Application\CreateTicket\CreateTicketCommandRequest;
+use TicketSystem\Ticket\Application\NextTicket\NextTicketCommandRequest;
+use TicketSystem\Ticket\Application\NextTicket\NoNextTicketResponse;
 use TicketSystem\Ticket\Domain\TicketDto;
 use TicketSystem\User\Infrastructure\Domain\Symfony\Security\DoctrineSecurityUser;
 
@@ -26,6 +28,18 @@ class TicketController extends Controller
             (string) $request->request->get('content'),
             (string) $request->request->get('priority'),
             (string) $request->request->get('category'),
+            $user->getUserIdentifier()
+        ));
+
+        return $this->jsonResponse($response);
+    }
+
+    /**
+     * @param CommandHandler<NextTicketCommandRequest, NoNextTicketResponse|TicketDto> $nextTicketCommand
+     */
+    public function next(#[CurrentUser] DoctrineSecurityUser $user, CommandHandler $nextTicketCommand): Response
+    {
+        $response = $nextTicketCommand->execute(NextTicketCommandRequest::create(
             $user->getUserIdentifier()
         ));
 

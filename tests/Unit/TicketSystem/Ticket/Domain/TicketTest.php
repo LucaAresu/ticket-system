@@ -134,4 +134,12 @@ class TicketTest extends TestCase
 
         self::assertEquals($ticket->expiration(), new \DateTimeImmutable($expectedExpiration));
     }
+
+    /** @test */
+    public function ticket_is_not_equal_to_null(): void
+    {
+        $ticket = TicketHelper::ticket();
+
+        self::assertFalse($ticket->isEqual(null));
+    }
 }

@@ -23,7 +23,7 @@ class RetrieveAccessTokenTest extends TestCase
 
     private GetUserInfo $getUserInfo;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->getUserInfo = \Mockery::mock(GetUserInfo::class);
         $this->getUserInfo->shouldReceive('execute')->once()->andReturn(UserDto::createFrom(UserHelper::user()));
