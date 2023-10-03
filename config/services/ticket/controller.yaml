@@ -18,3 +18,8 @@ services:
     class: TicketSystem\Shared\Application\Command\CommandHandler
     arguments:
       $command: '@TicketSystem\Ticket\Application\NextTicket\NextTicketCommand'
+
+  TicketSystem\Shared\Application\Command\CommandHandler $addAnswerCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\Ticket\Application\AddAnswer\AddAnswerCommand'

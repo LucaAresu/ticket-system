@@ -25,7 +25,7 @@ composer install
 - If the ticket is not answered within the time limit and has already been assigned to an Operator, the ticket must be assigned to a new Operator and the old Operator must receive a penalty
 - A time limit for answering the ticket by an agent is based on the ticket priority
 - A ticket can only escalate after an Operator has answered (The User can't answer and then escalate)
-- Ticket can be escalated by both Users and Agents when it can't be resolved
+- Ticket can be escalated by both Users and Operators when it can't be resolved
 - When a ticket is escalated, Super Operator must be notified
 - Ticket can be closed 
   - by the User without specifying a reason

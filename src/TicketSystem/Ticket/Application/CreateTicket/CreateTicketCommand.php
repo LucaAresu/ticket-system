@@ -14,7 +14,7 @@ use TicketSystem\Ticket\Domain\TicketDto;
  */
 class CreateTicketCommand implements Command
 {
-    public function __construct(private CreateTicket $createTicket)
+    public function __construct(private readonly CreateTicket $createTicket)
     {
     }
 

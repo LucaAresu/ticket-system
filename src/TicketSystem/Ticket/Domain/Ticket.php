@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace TicketSystem\Ticket\Domain;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use TicketSystem\Shared\Domain\Aggregate;
+use TicketSystem\Ticket\Domain\Answer\Answer;
+use TicketSystem\Ticket\Domain\Answer\AnswerDto;
+use TicketSystem\Ticket\Domain\Answer\AnswerId;
+use TicketSystem\Ticket\Domain\Answer\ForbiddenAnswerException;
 use TicketSystem\User\Domain\Operator\OperatorId;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
@@ -15,11 +21,16 @@ final class Ticket implements Aggregate
     private const TICKET_TITLE_MAX_LENGTH = 128;
     private const TICKET_CONTENT_MAX_LENGTH = 2048;
     public readonly \DateTimeImmutable $createdAt;
-    private \DateTimeImmutable $expiration;
+    private null|\DateTimeImmutable $expiration;
 
     private TicketStatus $status;
     private null|OperatorId $operator;
     private \DateTimeImmutable $updatedAt;
+
+    /**
+     * @var ArrayCollection<int, Answer>|Collection<int, Answer>
+     */
+    private Collection|ArrayCollection $answers;
 
     private function __construct(
         public readonly TicketId $id,
@@ -34,6 +45,8 @@ final class Ticket implements Aggregate
         $this->operator = null;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();
         $this->updatedAt = $createdAt ?? new \DateTimeImmutable();
+
+        $this->answers = new ArrayCollection();
 
         $this->calculateExpiration();
     }
@@ -71,7 +84,7 @@ final class Ticket implements Aggregate
         return $this->operator;
     }
 
-    public function expiration(): \DateTimeImmutable
+    public function expiration(): null|\DateTimeImmutable
     {
         return $this->expiration;
     }
@@ -144,13 +157,79 @@ final class Ticket implements Aggregate
 
     private function calculateExpiration(): void
     {
-        $this->expiration = $this->updatedAt->add(
-            $this->priority->expirationIntervalBasedOnUrgency()
-        );
+        if (TicketStatus::WAITING_FOR_SUPPORT === $this->status) {
+            $this->expiration = $this->updatedAt->add(
+                $this->priority->expirationIntervalBasedOnUrgency()
+            );
+
+            return;
+        }
+
+        $this->expiration = null;
     }
 
     private function ticketUpdated(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function addAnswer(AnswerId $answerId, User $user, string $content): self
+    {
+        if (false === $this->canAnswer($user)) {
+            throw ForbiddenAnswerException::create($user->id, $this->id);
+        }
+        $this->createAnswer($answerId, $user, $content);
+
+        $this->updateStatusByAnswerer($user);
+
+        $this->ticketUpdated();
+        $this->calculateExpiration();
+
+        return $this;
+    }
+
+    private function canAnswer(User $user): bool
+    {
+        if ($user->id->isEqual($this->opener)) {
+            return true;
+        }
+
+        return $user->operatorId()->isEqual($this->operator)
+            || $user->isSuperOperator();
+    }
+
+    private function createAnswer(AnswerId $answerId, User $user, string $content): void
+    {
+        $this->answers->add(
+            Answer::create(
+                $answerId,
+                $this,
+                $user->id,
+                $content,
+            )
+        );
+    }
+
+    private function updateStatusByAnswerer(User $user): void
+    {
+        $this->status = match (true) {
+            $user->id->isEqual($this->opener) => TicketStatus::WAITING_FOR_SUPPORT,
+            $user->isOperator() => TicketStatus::WAITING_FOR_USER,
+            default => throw new \LogicException('Ticket status can\'t be assigned')
+        };
+    }
+
+    /**
+     * @return array<int, AnswerDto>
+     */
+    public function answers(): array
+    {
+        $answers = [];
+
+        foreach ($this->answers->getValues() as $answer) {
+            $answers[] = AnswerDto::createFrom($answer);
+        }
+
+        return $answers;
     }
 }

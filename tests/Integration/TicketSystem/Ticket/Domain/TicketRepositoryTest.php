@@ -7,16 +7,20 @@ namespace Tests\Integration\TicketSystem\Ticket\Domain;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Tests\Helpers\Ticket\TicketHelper;
 use Tests\Helpers\User\UserHelper;
+use TicketSystem\Ticket\Domain\Answer\AnswerId;
 use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\Ticket\Domain\TicketId;
 use TicketSystem\Ticket\Domain\TicketPriority;
 use TicketSystem\Ticket\Domain\TicketRepository;
 use TicketSystem\Ticket\Domain\TicketStatus;
 use TicketSystem\User\Domain\Operator\OperatorId;
+use TicketSystem\User\Domain\UserRepository;
+use TicketSystem\User\Domain\UserRole;
 
 class TicketRepositoryTest extends KernelTestCase
 {
     private TicketRepository $ticketRepository;
+    private UserRepository $userRepository;
 
     protected function setUp(): void
     {
@@ -24,6 +28,7 @@ class TicketRepositoryTest extends KernelTestCase
         $container = self::$kernel->getContainer();
 
         $this->ticketRepository = $container->get('TestTicketRepository');
+        $this->userRepository = $container->get('TestUserRepository');
     }
 
     /** @test */
@@ -120,5 +125,26 @@ class TicketRepositoryTest extends KernelTestCase
     private function operatorId(): OperatorId
     {
         return OperatorId::create(UserHelper::userId());
+    }
+
+    /** @test */
+    public function answer_should_be_saved(): void
+    {
+        $ticket = TicketHelper::ticket();
+
+        $user = UserHelper::user(UserRole::OPERATOR);
+        $this->userRepository->save($user);
+
+        $ticket->addAnswer(
+            AnswerId::create(TicketHelper::id()),
+            $user,
+            'fafsaaf'
+        );
+
+        $this->ticketRepository->save($ticket);
+
+        $savedTicket = $this->ticketRepository->ofId($ticket->id);
+
+        self::assertNotEmpty($savedTicket->answers());
     }
 }

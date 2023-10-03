@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\TicketSystem\Ticket\Domain;
 
-use Monolog\Test\TestCase;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use Tests\Helpers\Ticket\TicketHelper;
 use Tests\Helpers\User\UserHelper;
 use TicketSystem\Ticket\Domain\Ticket;

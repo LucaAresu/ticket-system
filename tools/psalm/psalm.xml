@@ -47,6 +47,7 @@
         <UnusedProperty>
             <errorLevel type="suppress">
                 <file name="../../src/TicketSystem/User/Domain/Operator/Operator.php" />
+                <file name="../../src/TicketSystem/Ticket/Domain/Answer/Answer.php" />
             </errorLevel>
         </UnusedProperty>
     </issueHandlers>

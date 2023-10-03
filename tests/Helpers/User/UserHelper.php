@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Helpers\User;
 
 use TicketSystem\Shared\Domain\Email;
+use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRole;
@@ -26,15 +27,20 @@ class UserHelper
         return 'asd123';
     }
 
-    public static function user(UserRole $role = UserRole::USER): User
+    public static function user(UserRole $role = UserRole::USER, string $id = null, TicketCategory $category = TicketCategory::HR): User
     {
-        return User::create(
-            UserId::create(self::userId()),
+        $user = User::create(
+            UserId::create($id ?? self::userId()),
             Email::create(self::email()),
             'Billy',
             'Something',
             self::password(),
-            $role
         );
+
+        if (UserRole::USER !== $role) {
+            $user->become($role, $category);
+        }
+
+        return $user;
     }
 }

@@ -34,8 +34,12 @@ readonly class EntityId
         return (bool) preg_match(self::PATTERN, $value);
     }
 
-    public function isEqual(EntityId $entityId): bool
+    public function isEqual(null|EntityId $entityId): bool
     {
+        if (null === $entityId) {
+            return false;
+        }
+
         return static::class === $entityId::class
             && $this->id === $entityId->id;
     }

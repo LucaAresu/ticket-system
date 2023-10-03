@@ -9,6 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Ramsey\Uuid\Uuid;
 use TicketSystem\Shared\Domain\EntityId;
 use TicketSystem\Shared\Infrastructure\Doctrine\DoctrineRepository;
+use TicketSystem\Ticket\Domain\Answer\AnswerId;
 use TicketSystem\Ticket\Domain\Ticket;
 use TicketSystem\Ticket\Domain\TicketCategory;
 use TicketSystem\Ticket\Domain\TicketId;
@@ -36,6 +37,11 @@ class DoctrineTicketRepository extends DoctrineRepository implements TicketRepos
     public function nextId(): EntityId
     {
         return TicketId::create(Uuid::uuid4()->toString());
+    }
+
+    public function nextAnswerId(): AnswerId
+    {
+        return AnswerId::create(Uuid::uuid4()->toString());
     }
 
     /** @psalm-suppress QueryBuilderSetParameter
@@ -67,8 +73,9 @@ class DoctrineTicketRepository extends DoctrineRepository implements TicketRepos
         return $this->baseNextTicketQuery(true, $ticketCategory, $operatorId);
     }
 
-    public function getNextUnassignedCriticalTicketWaitingForOperator(TicketCategory $ticketCategory = null): null|Ticket
-    {
+    public function getNextUnassignedCriticalTicketWaitingForOperator(
+        TicketCategory $ticketCategory = null
+    ): null|Ticket {
         return $this->baseNextTicketQuery(true, $ticketCategory);
     }
 
@@ -84,8 +91,11 @@ class DoctrineTicketRepository extends DoctrineRepository implements TicketRepos
         return $this->baseNextTicketQuery(false, $ticketCategory);
     }
 
-    private function baseNextTicketQuery(bool $isCritical, null|TicketCategory $ticketCategory, null|OperatorId $operatorId = null): null|Ticket
-    {
+    private function baseNextTicketQuery(
+        bool $isCritical,
+        null|TicketCategory $ticketCategory,
+        null|OperatorId $operatorId = null
+    ): null|Ticket {
         $queryBuilder = $this->addCategoryToQuery($this->createSelect(), $ticketCategory);
 
         /** @var null|Ticket $result */

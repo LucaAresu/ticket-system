@@ -28,7 +28,7 @@ final class Version20230825075514 extends AbstractMigration
             category VARCHAR(32) NOT NULL,
             opener VARCHAR(36) NOT NULL REFERENCES `users`(id),
             operator VARCHAR(36) NULL REFERENCES `users`(id),
-            expiration DATETIME NOT NULL,
+            expiration DATETIME NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
             PRIMARY KEY(id)
