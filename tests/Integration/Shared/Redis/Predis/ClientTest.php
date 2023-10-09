@@ -12,7 +12,7 @@ class ClientTest extends KernelTestCase
     /** @var Client */
     private Client $redisClient;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         self::bootKernel();
         $this->redisClient = self::getContainer()->get('TestRedisClient');

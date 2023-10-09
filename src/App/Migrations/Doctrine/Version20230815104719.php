@@ -6,15 +6,12 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
 final class Version20230815104719 extends AbstractMigration
 {
-    private ContainerInterface $container;
-
     public function getDescription(): string
     {
         return '';

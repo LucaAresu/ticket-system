@@ -19,15 +19,17 @@ class User implements Aggregate
 
     private null|Operator $operator = null;
 
+    private UserRole $role;
+
     private function __construct(
         public readonly UserId $id,
         public readonly Email $email,
         public readonly string $name,
         public readonly string $lastname,
         #[\SensitiveParameter] private readonly string $password,
-        private UserRole $role
     ) {
         $this->validate($password, $name, $lastname);
+        $this->role = UserRole::USER;
     }
 
     private function validate(string $password, string $name, string $lastname): void
@@ -55,9 +57,8 @@ class User implements Aggregate
         string $name,
         string $lastname,
         #[\SensitiveParameter] string $password,
-        UserRole $role
     ): self {
-        return new self($id, $email, $name, $lastname, $password, $role);
+        return new self($id, $email, $name, $lastname, $password);
     }
 
     public function isEqual(User $user): bool
@@ -112,6 +113,11 @@ class User implements Aggregate
     public function operatorCategory(): null|TicketCategory
     {
         return $this->operatorOrFail()->assignedCategory();
+    }
+
+    public function operatorId(): OperatorId
+    {
+        return $this->operatorOrFail()->id;
     }
 
     private function operatorOrFail(): Operator

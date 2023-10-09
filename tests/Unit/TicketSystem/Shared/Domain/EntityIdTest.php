@@ -36,4 +36,14 @@ class EntityIdTest extends TestCase
         $id = '';
         EntityId::create($id);
     }
+
+    /** @test */
+    public function entity_is_different_from_null(): void
+    {
+        $id = '83ea8380-9d6b-4b7e-a064-8c0c2155b9cd';
+
+        $obj = EntityId::create($id);
+
+        self::assertFalse($obj->isEqual(null));
+    }
 }

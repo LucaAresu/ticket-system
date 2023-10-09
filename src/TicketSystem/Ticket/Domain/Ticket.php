@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace TicketSystem\Ticket\Domain;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use TicketSystem\Shared\Domain\Aggregate;
+use TicketSystem\Ticket\Domain\Answer\Answer;
+use TicketSystem\Ticket\Domain\Answer\AnswerDto;
+use TicketSystem\Ticket\Domain\Answer\AnswerId;
+use TicketSystem\Ticket\Domain\Answer\ForbiddenAnswerException;
+use TicketSystem\User\Domain\Operator\OperatorId;
 use TicketSystem\User\Domain\User;
 use TicketSystem\User\Domain\UserId;
 use TicketSystem\User\Domain\UserRole;
@@ -14,10 +21,16 @@ final class Ticket implements Aggregate
     private const TICKET_TITLE_MAX_LENGTH = 128;
     private const TICKET_CONTENT_MAX_LENGTH = 2048;
     public readonly \DateTimeImmutable $createdAt;
+    private null|\DateTimeImmutable $expiration;
 
     private TicketStatus $status;
-    private null|UserId $operator;
-    private \DateTime $updatedAt;
+    private null|OperatorId $operator;
+    private \DateTimeImmutable $updatedAt;
+
+    /**
+     * @var ArrayCollection<int, Answer>|Collection<int, Answer>
+     */
+    private Collection|ArrayCollection $answers;
 
     private function __construct(
         public readonly TicketId $id,
@@ -26,14 +39,16 @@ final class Ticket implements Aggregate
         private TicketPriority $priority,
         public readonly TicketCategory $category,
         public readonly UserId $opener,
+        \DateTimeImmutable $createdAt = null,
     ) {
         $this->status = TicketStatus::WAITING_FOR_SUPPORT;
         $this->operator = null;
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTime();
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->updatedAt = $createdAt ?? new \DateTimeImmutable();
 
-        $this->validateTitle($title);
-        $this->validateContent($content);
+        $this->answers = new ArrayCollection();
+
+        $this->calculateExpiration();
     }
 
     public static function create(
@@ -43,14 +58,58 @@ final class Ticket implements Aggregate
         TicketPriority $priority,
         TicketCategory $category,
         User $opener,
+        \DateTimeImmutable $createdAt = null,
     ): self {
-        $instance = new self($id, $title, $content, $priority, $category, $opener->id);
+        $instance = new self($id, $title, $content, $priority, $category, $opener->id, $createdAt);
 
         $instance->validateTitle($title);
         $instance->validateContent($content);
         $instance->validatePriority($priority, $opener);
 
         return $instance;
+    }
+
+    public function status(): TicketStatus
+    {
+        return $this->status;
+    }
+
+    public function priority(): TicketPriority
+    {
+        return $this->priority;
+    }
+
+    public function operator(): null|OperatorId
+    {
+        return $this->operator;
+    }
+
+    public function expiration(): null|\DateTimeImmutable
+    {
+        return $this->expiration;
+    }
+
+    public function updatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function isEqual(null|Ticket $ticket): bool
+    {
+        if (null === $ticket) {
+            return false;
+        }
+
+        return $this->id->isEqual($ticket->id);
+    }
+
+    public function assignTo(OperatorId $operator): self
+    {
+        $this->operator = $operator;
+
+        $this->ticketUpdated();
+
+        return $this;
     }
 
     private function validateTitle(string $title): void
@@ -96,28 +155,81 @@ final class Ticket implements Aggregate
         }
     }
 
-    public function status(): TicketStatus
+    private function calculateExpiration(): void
     {
-        return $this->status;
+        if (TicketStatus::WAITING_FOR_SUPPORT === $this->status) {
+            $this->expiration = $this->updatedAt->add(
+                $this->priority->expirationIntervalBasedOnUrgency()
+            );
+
+            return;
+        }
+
+        $this->expiration = null;
     }
 
-    public function priority(): TicketPriority
+    private function ticketUpdated(): void
     {
-        return $this->priority;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function operator(): null|UserId
+    public function addAnswer(AnswerId $answerId, User $user, string $content): self
     {
-        return $this->operator;
+        if (false === $this->canAnswer($user)) {
+            throw ForbiddenAnswerException::create($user->id, $this->id);
+        }
+        $this->createAnswer($answerId, $user, $content);
+
+        $this->updateStatusByAnswerer($user);
+
+        $this->ticketUpdated();
+        $this->calculateExpiration();
+
+        return $this;
     }
 
-    public function updatedAt(): \DateTimeImmutable
+    private function canAnswer(User $user): bool
     {
-        return \DateTimeImmutable::createFromMutable($this->updatedAt);
+        if ($user->id->isEqual($this->opener)) {
+            return true;
+        }
+
+        return $user->operatorId()->isEqual($this->operator)
+            || $user->isSuperOperator();
     }
 
-    public function isEqual(Ticket $ticket): bool
+    private function createAnswer(AnswerId $answerId, User $user, string $content): void
     {
-        return $this->id->isEqual($ticket->id);
+        $this->answers->add(
+            Answer::create(
+                $answerId,
+                $this,
+                $user->id,
+                $content,
+            )
+        );
+    }
+
+    private function updateStatusByAnswerer(User $user): void
+    {
+        $this->status = match (true) {
+            $user->id->isEqual($this->opener) => TicketStatus::WAITING_FOR_SUPPORT,
+            $user->isOperator() => TicketStatus::WAITING_FOR_USER,
+            default => throw new \LogicException('Ticket status can\'t be assigned')
+        };
+    }
+
+    /**
+     * @return array<int, AnswerDto>
+     */
+    public function answers(): array
+    {
+        $answers = [];
+
+        foreach ($this->answers->getValues() as $answer) {
+            $answers[] = AnswerDto::createFrom($answer);
+        }
+
+        return $answers;
     }
 }

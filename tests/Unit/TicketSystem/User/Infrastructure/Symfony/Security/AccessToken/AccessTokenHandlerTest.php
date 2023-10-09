@@ -18,7 +18,7 @@ class AccessTokenHandlerTest extends TestCase
     private UserRepository $userRepository;
     private AccessTokenRepository $accessTokenRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->accessTokenRepository = \Mockery::mock(AccessTokenRepository::class);
         $this->accessTokenRepository->shouldReceive('refreshAccessToken')->zeroOrMoreTimes();

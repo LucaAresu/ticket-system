@@ -21,7 +21,7 @@ class CreateUserTest extends KernelTestCase
     private UserRepository $repository;
     private UserPasswordHasher $userPasswordHasher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repository = \Mockery::mock(UserRepository::class);
         $this->userPasswordHasher = \Mockery::mock(UserPasswordHasher::class);

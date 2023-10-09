@@ -27,7 +27,7 @@ class CreateTicketTest extends TestCase
     private TicketRepository $ticketRepository;
     private UserRepository $userRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userRepository = \Mockery::mock(UserRepository::class);
         $this->userRepository->shouldReceive('ofId')

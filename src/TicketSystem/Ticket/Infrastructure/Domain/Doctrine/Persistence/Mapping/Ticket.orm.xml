@@ -11,8 +11,17 @@
         <field name="priority" enum-type="TicketSystem\Ticket\Domain\TicketPriority" column="priority" nullable="false" />
         <field name="category" enum-type="TicketSystem\Ticket\Domain\TicketCategory" column="category" nullable="false" />
         <field name="opener" type="UserId" column="opener" nullable="false" />
-        <field name="operator" type="UserId" column="operator" nullable="true" />
+        <field name="operator" type="OperatorId" column="operator" nullable="true" />
+        <field name="expiration" type="datetime_immutable" column="expiration" nullable="true" />
         <field name="createdAt" type="datetime_immutable" column="created_at" nullable="false" />
-        <field name="updatedAt" type="datetime" column="updated_at" nullable="false" />
+        <field name="updatedAt" type="datetime_immutable" column="updated_at" nullable="false" />
+        <one-to-many field="answers" target-entity="TicketSystem\Ticket\Domain\Answer\Answer" mapped-by="ticket">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+            <order-by>
+                <order-by-field name="createdAt" direction="ASC" />
+            </order-by>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

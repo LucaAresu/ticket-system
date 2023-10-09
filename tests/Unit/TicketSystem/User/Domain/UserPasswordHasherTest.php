@@ -11,7 +11,7 @@ class UserPasswordHasherTest extends TestCase
 {
     private UserPasswordHasher $userPasswordHasher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userPasswordHasher = new class() extends UserPasswordHasher {
             protected function hash(string $password): string

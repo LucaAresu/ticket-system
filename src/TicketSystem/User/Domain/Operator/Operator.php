@@ -10,7 +10,7 @@ use TicketSystem\User\Domain\User;
 class Operator
 {
     private function __construct(
-        private OperatorId $id,
+        public readonly OperatorId $id,
         private readonly User $user,
         private null|TicketCategory $assignedCategory
     ) {

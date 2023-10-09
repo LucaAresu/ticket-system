@@ -13,10 +13,12 @@ final readonly class TicketDto
         public TicketStatus $status,
         public TicketPriority $priority,
         public TicketCategory $category,
+        public null|\DateTimeImmutable $expiration,
         public string $opener,
         public null|string $operator,
         public \DateTimeImmutable $createdAt,
-        public \DateTimeImmutable $updatedAt
+        public \DateTimeImmutable $updatedAt,
+        public array $answers
     ) {
     }
 
@@ -29,10 +31,12 @@ final readonly class TicketDto
             $ticket->status(),
             $ticket->priority(),
             $ticket->category,
+            $ticket->expiration(),
             $ticket->opener->id,
             $ticket->operator()?->id,
             $ticket->createdAt,
-            $ticket->updatedAt()
+            $ticket->updatedAt(),
+            $ticket->answers()
         );
     }
 }

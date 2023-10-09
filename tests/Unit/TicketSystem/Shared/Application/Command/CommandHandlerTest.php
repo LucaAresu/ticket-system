@@ -17,7 +17,7 @@ class CommandHandlerTest extends TestCase
     private Command $command;
     private Logger $logger;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->logger = \Mockery::mock(Logger::class);
 

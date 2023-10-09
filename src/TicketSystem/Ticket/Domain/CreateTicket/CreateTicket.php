@@ -20,8 +20,8 @@ use TicketSystem\User\Domain\UserRole;
 class CreateTicket
 {
     public function __construct(
-        private TicketRepository $ticketRepository,
-        private UserRepository $userRepository,
+        private readonly TicketRepository $ticketRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 

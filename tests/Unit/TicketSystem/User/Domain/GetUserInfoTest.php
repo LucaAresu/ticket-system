@@ -16,7 +16,7 @@ class GetUserInfoTest extends TestCase
     private GetUserInfo $getOwnInfo;
     private UserRepository $userRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userRepository = \Mockery::mock(UserRepository::class);
 

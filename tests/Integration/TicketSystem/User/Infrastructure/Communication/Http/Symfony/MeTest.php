@@ -15,7 +15,7 @@ class MeTest extends WebTestCase
 
     private KernelBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = self::createClient();
     }

@@ -13,7 +13,7 @@ class UserPasswordHasherVerifierTest extends KernelTestCase
     private UserPasswordHasher $hasher;
     private UserPasswordVerifier $verifier;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $kernel = self::bootKernel();
         $container = $kernel->getContainer();

@@ -2,3 +2,13 @@ create_ticket:
   path: /v1/ticket
   controller: TicketSystem\Ticket\Infrastructure\Communication\Http\Symfony\Controller\TicketController::create
   methods: POST
+
+next_ticket:
+  path: /v1/ticket/next
+  controller: TicketSystem\Ticket\Infrastructure\Communication\Http\Symfony\Controller\TicketController::next
+  methods: GET
+
+add_answer:
+  path: /v1/ticket/{ticketId}/answer
+  controller: TicketSystem\Ticket\Infrastructure\Communication\Http\Symfony\Controller\TicketController::addAnswer
+  methods: POST
