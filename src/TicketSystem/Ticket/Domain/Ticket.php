@@ -173,8 +173,21 @@ final class Ticket implements Aggregate
         $this->updatedAt = new \DateTimeImmutable();
     }
 
+    public function close(): void
+    {
+        $this->ticketUpdated();
+
+        $this->expiration = null;
+
+        $this->status = TicketStatus::CLOSED;
+    }
+
     public function addAnswer(AnswerId $answerId, User $user, string $content): self
     {
+        if (true === $this->isClosed()) {
+            throw CannotPerformActionOnTicket::create($this->id, 'ticket is closed');
+        }
+
         if (false === $this->canAnswer($user)) {
             throw ForbiddenAnswerException::create($user->id, $this->id);
         }
@@ -196,6 +209,11 @@ final class Ticket implements Aggregate
 
         return $user->operatorId()->isEqual($this->operator)
             || $user->isSuperOperator();
+    }
+
+    public function isClosed(): bool
+    {
+        return TicketStatus::CLOSED === $this->status;
     }
 
     private function createAnswer(AnswerId $answerId, User $user, string $content): void

@@ -10,6 +10,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use TicketSystem\Shared\Application\Command\CommandHandler;
 use TicketSystem\Shared\Infrastructure\Symfony\Communication\Http\Controller\Controller;
 use TicketSystem\Ticket\Application\AddAnswer\AddAnswerRequest;
+use TicketSystem\Ticket\Application\CloseTicket\CloseTicketCommandRequest;
 use TicketSystem\Ticket\Application\CreateTicket\CreateTicketCommandRequest;
 use TicketSystem\Ticket\Application\NextTicket\NextTicketCommandRequest;
 use TicketSystem\Ticket\Application\NextTicket\NoNextTicketResponse;
@@ -68,6 +69,24 @@ class TicketController extends Controller
                 $user->getUserIdentifier(),
                 $ticketId,
                 (string) $request->request->get('content'),
+            )
+        );
+
+        return $this->jsonResponse($response);
+    }
+
+    /**
+     * @param CommandHandler<CloseTicketCommandRequest, TicketDto> $closeTicketCommand
+     */
+    public function close(
+        #[CurrentUser] DoctrineSecurityUser $user,
+        string $ticketId,
+        CommandHandler $closeTicketCommand
+    ): Response {
+        $response = $closeTicketCommand->execute(
+            CloseTicketCommandRequest::create(
+                $user->getUserIdentifier(),
+                $ticketId
             )
         );
 

@@ -23,3 +23,8 @@ services:
     class: TicketSystem\Shared\Application\Command\CommandHandler
     arguments:
       $command: '@TicketSystem\Ticket\Application\AddAnswer\AddAnswerCommand'
+
+  TicketSystem\Shared\Application\Command\CommandHandler $closeTicketCommand:
+    class: TicketSystem\Shared\Application\Command\CommandHandler
+    arguments:
+      $command: '@TicketSystem\Ticket\Application\CloseTicket\CloseTicketCommand'

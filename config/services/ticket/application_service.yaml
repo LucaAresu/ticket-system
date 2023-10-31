@@ -33,6 +33,11 @@ services:
       $ticketRepository: '@app.ticket.repository'
       $userRepository: '@app.user.repository'
 
+  TicketSystem\Ticket\Domain\CloseTicket\CloseTicket:
+    class: TicketSystem\Ticket\Domain\CloseTicket\CloseTicket
+    arguments:
+      $ticketRepository: '@app.ticket.repository'
+
 when@test:
   services:
     TestTicketRepository:

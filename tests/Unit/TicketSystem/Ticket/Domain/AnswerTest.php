@@ -10,6 +10,7 @@ use Tests\Helpers\User\UserHelper;
 use TicketSystem\Ticket\Domain\Answer\AnswerId;
 use TicketSystem\Ticket\Domain\Answer\EmptyAnswerException;
 use TicketSystem\Ticket\Domain\Answer\ForbiddenAnswerException;
+use TicketSystem\Ticket\Domain\CannotPerformActionOnTicket;
 use TicketSystem\Ticket\Domain\Ticket;
 use TicketSystem\Ticket\Domain\TicketStatus;
 use TicketSystem\User\Domain\User;
@@ -177,6 +178,31 @@ class AnswerTest extends TestCase
             $operator,
             ''
         );
+    }
+
+    /** @test */
+    public function user_cannot_answer_if_ticket_is_closed(): void
+    {
+        [$ticket, $operator] = $this->createTicket();
+
+        $ticket->close();
+
+        $user = UserHelper::user();
+        $this->expectException(CannotPerformActionOnTicket::class);
+
+        $ticket->addAnswer(AnswerId::create(TicketHelper::id()), $user, 'fsafsafsa');
+    }
+
+    /** @test */
+    public function operator_cannot_answer_if_ticket_is_closed(): void
+    {
+        [$ticket, $operator] = $this->createTicket();
+
+        $ticket->close();
+
+        $this->expectException(CannotPerformActionOnTicket::class);
+
+        $ticket->addAnswer(AnswerId::create(TicketHelper::id()), $operator, 'fsafsafsa');
     }
 
     /**
